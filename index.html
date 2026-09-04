@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSYSTEM.CO // TERMINAL INTERCEPT</title>
+    <style>
+        /* Premium deep tech architecture base */
+        body, html {
+            background-color: #030306;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* HIGH-DEFINITION PARALLAX VECTOR WARP FIELD BACKDROP */
+        .space-backdrop {
+            position: absolute;
+            width: 100%;
+            height: 200%;
+            top: 0;
+            left: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 15% 15%, #ffffff, transparent),
+                radial-gradient(2px 2px at 45% 55%, #00ffcc, transparent),
+                radial-gradient(1px 1px at 75% 25%, #ffffff, transparent),
+                radial-gradient(2.5px 2.5px at 85% 75%, #00bfff, transparent),
+                radial-gradient(1.5px 1.5px at 25% 85%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 55% 15%, #ffffff, transparent),
+                radial-gradient(1px 1px at 90% 40%, #00ffcc, transparent);
+            background-size: 100% 50%;
+            z-index: 1;
+            opacity: 0.8;
+            animation: vectorSpaceWarp 18s linear infinite;
+        }
+        @keyframes vectorSpaceWarp {
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); }
+        }
+
+        /* HIGH-QUALITY PREMIUM INTERFACE CONSOLE CORE (TOP MODULE) */
+        .jsystem-monitor {
+            position: relative;
+            z-index: 10;
+            width: 450px;
+            background: linear-gradient(145deg, #181a24 0%, #0f1016 100%);
+            border: 2px solid rgba(0, 191, 255, 0.25);
+            border-radius: 16px;
+            padding: 45px 25px 30px 25px;
+            box-shadow: 
+                0 25px 60px rgba(0,0,0,0.8), 
+                0 0 40px rgba(0, 191, 255, 0.1),
+                inset 0 1px 2px rgba(255,255,255,0.05);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: smoothEngineFloat 8s ease-in-out infinite;
+        }
+        @keyframes smoothEngineFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(0.3deg); }
+        }
+
+        /* Sleek Industrial Corporate Branding Header Stamp */
+        .brand-header {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00bfff;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+        }
+
+        /* Premium Tech Corner Brackets */
+        .bracket {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-color: rgba(0, 255, 204, 0.4);
+            border-style: solid;
+            pointer-events: none;
+        }
+        .tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
+        .tr { top: 14px; right: 14px; border-width: 2px 0 0 2px; transform: rotate(90deg); }
+        .bl { bottom: 14px; left: 14px; border-width: 2px 0 0 2px; transform: rotate(-90deg); }
+        .br { bottom: 14px; right: 14px; border-width: 2px 0 0 2px; transform: rotate(180deg); }
+
+        /* Highly-Polished Curved CRT Obsidian Matrix Housing */
+        .crt-screen-container {
+            background-color: #050608;
+            border: 2px solid #1c1e26;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,1), 0 0 15px rgba(0, 255, 204, 0.05);
+            overflow: hidden;
+        }
+        .crt-screen {
+            background: radial-gradient(circle at center, #051412 0%, #010304 100%);
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .crt-screen::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            z-index: 5;
+            background-size: 100% 3px;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* High-Definition Luminescent Shaded ASCII Egg Render Window */
+        .ascii-egg-matrix {
+            font-size: 11px;
+            line-height: 11px;
+            white-space: pre;
+            color: #00ffcc;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.8);
+            position: absolute;
+            transition: opacity 1s ease-in-out;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        /* SCREEN TEXT OUTPUT CONTAINER INSIDE THE CRT SCREEN */
+        .crt-text-output {
+            position: absolute;
+            width: 85%;
+            font-size: 13px;
+            color: #33ff77;
+            text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
+            line-height: 1.5;
+            text-align: center;
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            z-index: 3;
+            pointer-events: auto;
+            word-wrap: break-word;
+        }
+
+        /* FADING CONTROL CLASSES */
+        .hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        .visible {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        /* INTERCONNECTING CORE BUS DATA HIGHWAY CABLE WIRE */
+        .hardware-wire {
+            width: 8px;
+            height: 45px;
+            background: linear-gradient(90deg, #090a0f 0%, #202430 50%, #090a0f 100%);
+            border-left: 1px solid rgba(0, 191, 255, 0.15);
+            border-right: 1px solid rgba(0, 191, 255, 0.15);
+            z-index: 5;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            position: relative;
+            animation: dynamicCableStretch 8s ease-in-out infinite;
+        }
+        @keyframes dynamicCableStretch {
+            0%, 100% { height: 40px; transform: scaleX(1); }
+            50% { height: 52px; transform: scaleX(0.93); }
+        }
+
+        /* CORE INDUSTRIAL DASHBOARD CONFIG MODULE (BOTTOM CONTAINER) */
+        .inputter-deck {
+            position: relative;
+            z-index: 10;
+            width: 510px;
+            background: linear-gradient(145deg, #111218 0%, #171922 100%);
+            border: 2px solid rgba(0, 255, 204, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 
+                0 25px 55px rgba(0,0,0,0.8),
+                0 0 30px rgba(0, 255, 204, 0.05),
+                inset 0 1px 2px rgba(255,255,255,0.03);
+            animation: smoothConsoleFloat 8s ease-in-out infinite;
+            animation-delay: -4s;
+        }
+        @keyframes smoothConsoleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(-0.2deg); }
+        }
+
+        /* Left Section: Input Area */
+        .status-display-bay {
+            width: 260px;
+            height: 95px;
+            background-color: #030a07;
+            border: 1px solid rgba(0, 255, 100, 0.25);
+            border-radius: 6px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,1);
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        input {
+            background-color: #010403;
+            color: #00ff66;
+            border: 1px solid rgba(0, 255, 100, 0.4);
+            padding: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 4px rgba(0, 255, 100, 0.4);
+        }
+        input:focus {
+            border-color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3), inset 0 0 5px rgba(0,0,0,0.8);
+        }
+
+        /* Middle Section: Clean Brushed Steel Calibration Tuning Selector Dial */
+        .dial-knob-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .dial-knob {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #3a3e4f 0%, #1c1e26 100%);
+            border: 2px solid #090a0f;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15);
+            animation: dynamicSelectorTurn 14s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        .dial-knob-container::before {
+            content: "";
+            position: absolute;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 1px dashed rgba(0, 255, 204, 0.25);
+        }
+        .dial-pointer-notch {
+            position: absolute;
+            width: 3px;
+            height: 12px;
+            background-color: #00ffcc;
+            top: 4px;
+            left: 23px;
+            border-radius: 1px;
+            box-shadow: 0 0 4px #00ffcc;
+        }
+        @keyframes dynamicSelectorTurn {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(60deg); }
+            45% { transform: rotate(-45deg); }
+            75% { transform: rotate(140deg); }
+            90% { transform: rotate(30deg); }
+        }
+
+        /* Right Section: Clean Aerospace Heavy Actuator Override Execution Trigger */
+        .action-button-bay {
+            width: 105px;
+            height: 95px;
+            background: #0d0e12;
+            border: 2px solid #202430;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.9);
+        }
+        .red-launch-btn {
+            width: 76px;
+            height: 66px;
+            background: linear-gradient(to bottom, #ff3b3b 0%, #aa0000 100%);
+            border: 1px solid #550000;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 5px 0px #400000, 0 6px 12px rgba(0,0,0,0.6);
+            position: relative;
+            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .red-launch-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0px #400000, 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .red-launch-btn-label {
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            text-shadow: 0 -1px 2px rgba(0,0,0,0.7);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            user-select: none;
+        }
+        a {
+            color: #00ffcc;
+            text-decoration: underline;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(0,255,204,0.3);
+        }
+
+        /* Ambient Audio Controller Overlay Toggle */
+        .audio-deck-control {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            z-index: 100;
+        }
+        .mute-toggle-btn {
+            background: rgba(15, 17, 24, 0.7);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: #00ffcc;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+        }
+        .mute-toggle-btn:hover {
+            background: rgba(0, 255, 204, 0.15);
+            border-color: #00ffcc;
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<div class="space-backdrop">
+    <div class="stars"></div>
+</div>
+
+<div class="audio-deck-control">
+    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudio()">🎵 AUDIO: CLICK TO START</button>
+</div>
+
+<div class="jsystem-monitor">
+    <div class="brand-header">JSYSTEM.CO</div>
+    <div class="bracket tl"></div>
+    <div class="bracket tr"></div>
+    <div class="bracket bl"></div>
+    <div class="bracket br"></div>
+
+    <div class="crt-screen-container">
+        <div class="crt-screen">
+            <div class="ascii-egg-matrix" id="egg-renderer"></div>
+            <div class="crt-text-output hidden" id="screen-output"></div>
+        </div>
+    </div>
+</div>
+
+<div class="hardware-wire"></div>
+
+<div class="inputter-deck">
+    <div class="status-display-bay">
+        <input type="text" id="code-input" placeholder="Awaiting handshake code..." autocomplete="off">
+    </div>
+
+    <div class="dial-knob-container">
+        <div class="dial-knob">
+            <div class="dial-pointer-notch"></div>
+        </div>
+    </div>
+
+    <div class="action-button-bay">
+        <button class="red-launch-btn" onclick="checkCode()">
+            <span class="red-launch-btn-label">EXECUTE</span>
+        </button>
+    </div>
+</div>
+
+<script>
+// --- NOSTALGIC SYNTHESIZER AUDIO GENERATOR ---
+let audioCtx = null;
+let isAudioPlaying = false;
+let audioTimer = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function playNostalgicArpeggio() {
+    if (!isAudioPlaying || !audioCtx) return;
+    
+    // Nostalgic synth-wave chord progressions (Hz)
+    const notes = [
+        [220.00, 261.63, 329.63, 392.00], // A minor 7
+        [174.61, 220.00, 261.63, 329.63], // F major 7
+        [130.81, 164.81, 196.00, 246.94], // C major 7
+        [146.83, 174.61, 220.00, 261.63]  // D minor 7
+    ];
+    
+    let time = audioCtx.currentTime;
+    let chordIdx = Math.floor(time / 2) % notes.length;
+    let chord = notes[chordIdx];
+    
+    // Create soft nostalgic triangle waves
+    chord.forEach((freq, i) => {
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, time);
+        
+        // Soft ambient envelope
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.03, time + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 1.8);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start(time + (i * 0.15));
+        osc.stop(time + 2.0);
+    });
+}
+
+function toggleAudio() {
+    initAudio();
+    const btn = document.getElementById("audio-toggle-node");
+    
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    isAudioPlaying = !isAudioPlaying;
+    
+    if (isAudioPlaying) {
+        btn.textContent = "🔊 AUDIO: ON";
+        btn.style.color = "#00ffcc";
+        playNostalgicArpeggio();
+        audioTimer = setInterval(playNostalgicArpeggio, 1600);
+    } else {
+        btn.textContent = "🎵 AUDIO: OFF";
+        btn.style.color = "#ff4500";
+        clearInterval(audioTimer);
+    }
+}
+
+// Auto-start sound on user's first interaction anywhere on screen
+document.body.addEventListener("click", () => {
+    if (!isAudioPlaying) {
+        toggleAudio();
+    }
+}, { once: true });
+
+// --- 3D PERSPECTIVE CALCULATIONS FOR HIGH-DEFINITION SLOW SPINNING SPACE EGG ---
+const eggFrames = [];
+const numFrames = 24;
+const width = 30, height = 13;
+
+for (let f = 0; f < numFrames; f++) {
+    let frameLines = [];
+    let angle = (f / numFrames) * Math.PI * 2;
+    for (let y = 0; y < height; y++) {
+        let line = "";
+        let normalizedY = (y / (height - 1)) * 2 - 1;
+        let eggWidthFactor = Math.sqrt(1 - normalizedY * normalizedY) * (1.1 - 0.25 * normalizedY);
+        let bound = Math.round(10 * eggWidthFactor);
+        for (let x = 0; x < width; x++) {
+            let centerX = Math.round(width / 2);
+            let distFromCenter = x - centerX;
+            if (Math.abs(distFromCenter) <= bound && bound > 0) {
+                let nx = distFromCenter / bound;
+                let surfaceAngle = Math.asin(nx) + angle;
+                let surfacePattern = Math.sin(surfaceAngle * 4.5) * Math.cos(normalizedY * 2);
+                if (surfacePattern > 0.4) line += "M";
+                else if (surfacePattern > 0.0) line += "#";
+                else if (surfacePattern > -0.4) line += "=";
+                else line += ".";
+            } else {
+                line += " ";
+            }
+        }
+        frameLines.push(line);
+    }
+    eggFrames.push(frameLines.join("\n"));
+}
+
+let currentFrameIdx = 0;
+setInterval(() => {
+    document.getElementById("egg-renderer").textContent = eggFrames[currentFrameIdx];
+    currentFrameIdx = (currentFrameIdx + 1) % numFrames;
+}, 120);
+
+// --- SCREEN FADE DISPLAY LOGIC ---
+let fadeTimeout = null;
+
+function displayMessageOnScreen(messageHTML) {
+    const eggElement = document.getElementById("egg-renderer");
+    const screenOutput = document.getElementById("screen-output");
+
+    // Clear previous timer if standard commands are entered sequentially
+    if (fadeTimeout) clearTimeout(fadeTimeout);
+
+    screenOutput.innerHTML = messageHTML;
+
+    // Fade egg out, fade text in
+    eggElement.classList.add("hidden");
+    eggElement.classList.remove("visible");
+    screenOutput.classList.remove("hidden");
+    screenOutput.classList.add("visible");
+
+    // Hold message for 10 seconds, then fade back into spinning egg
+    fadeTimeout = setTimeout(() => {
+        screenOutput.classList.add("hidden");
+        screenOutput.classList.remove("visible");
+        eggElement.classList.remove("hidden");
+        eggElement.classList.add("visible");
+    }, 10000);
+}
+
+// --- SECURE SECURITY LOG MATCH PASSWORD AUTOMATION REGISTRY ---
+let currentState = "idle";
+document.getElementById("code-input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") { checkCode(); }
+});
+
+function checkCode() {
+    const inputField = document.getElementById("code-input");
+    const input = inputField.value.toLowerCase().trim();
+
+    if (currentState === "awaiting_jeorgie_interest") {
+        if (input === "yes" || input === "y") {
+            displayMessageOnScreen("DISPATCHING SECURE GATEWAY ROUTE TO PILOT DATABANK via REDDIT...");
+            setTimeout(() => {
+                window.location.href = "https://www.reddit.com/user/Cool-Technician-7609/";
+            }, 1000);
+        } else {
+            displayMessageOnScreen("CONVERSATION TREE FLUSHED. MAIN MATRIX REBOOT COMPLETED.");
+            currentState = "idle";
+        }
+        inputField.value = "";
+        return;
+    }
+
+    switch (input) {
+        case "estregg":
+            displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
+            break;
+        case "jeorgie":
+        case "yb-jeorgie":
+            displayMessageOnScreen("HOHO, YA INTERESTED IN HIM?<br>INPUT [YES] OR [NO] INTO TRANSLATION BUFFER.");
+            currentState = "awaiting_jeorgie_interest";
+            break;
+        case "egg":
+        case "space":
+            displayMessageOnScreen("TELEMETRY DATA: ASSET MATRICES ARE REVOLVING STABLY IN SECURE ISOLATION OVERLAY.");
+            break;
+        case "hacker":
+        case "virus":
+            displayMessageOnScreen("INTEGRITY PROTOCOL: VERIFIED SAFE PACKAGING PIPX FILE ENVIRONMENT. 0 MALWARE RECOGNIZED.");
+            break;
+        case "gamepad":
+        case "controller":
+            displayMessageOnScreen("SYSTEM LOG ERROR SHIELD: PAD LOGIC STRIPPED PERMANENTLY TO PREVENT SYSTEM SECTOR ENGINE FAULTS.");
+            break;
+        case "bill":
+        case "cipher":
+            displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
+        case "python":
+        case "curses":
+        case "wine":
+            displayMessageOnScreen("OHH you read that on The Repo");
+            break;
+        case "":
+            displayMessageOnScreen("TELEMETRY STATUS: ACTIVE. AWAITING DATA TRANSFERS.");
+            break;
+        default:
+            displayMessageOnScreen("DECRYPTION PATTERN MISMATCH. PIPELINE LOG PURGED.");
+            break;
+    }
+    if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
+}
+</script>
+</body>
+</html>
