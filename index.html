@@ -328,22 +328,22 @@
             z-index: 100;
         }
         .mute-toggle-btn {
-            background: rgba(15, 17, 24, 0.7);
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            color: #00ffcc;
-            padding: 6px 12px;
-            font-size: 11px;
+            background: rgba(255, 0, 85, 0.8);
+            border: 1px solid #ff0055;
+            color: #ffffff;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: bold;
             font-family: inherit;
             cursor: pointer;
             border-radius: 4px;
             backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
             transition: all 0.2s ease;
         }
         .mute-toggle-btn:hover {
-            background: rgba(0, 255, 204, 0.15);
-            border-color: #00ffcc;
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+            background: #ff0055;
+            box-shadow: 0 0 20px #ff0055;
         }
     </style>
 </head>
@@ -354,7 +354,7 @@
 </div>
 
 <div class="audio-deck-control">
-    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudio()">🎵 AUDIO: CLICK TO START</button>
+    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="startLoudAudio()">🔊 CLICK HERE TO PLAY LOUD MUSIC</button>
 </div>
 
 <div class="jsystem-monitor">
@@ -394,7 +394,7 @@
 </div>
 
 <script>
-// --- EMBEDDED AUDIO GENERATOR & MUSIC SYNTH ENGINE ---
+// --- HIGH-DECIBEL WEBAUDIO SYNTHESIZER ENGINE ---
 let audioCtx = null;
 let isAudioPlaying = false;
 let audioTimer = null;
@@ -405,45 +405,46 @@ function initAudio() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        
+        // SET HIGH VOLUME LEVEL (0.6 is very loud for Web Audio synthesis)
+        masterGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
         masterGain.connect(audioCtx.destination);
     }
 }
 
-// Melody & Chords for Mode 1 (Gravity Falls Theme)
+// Gravity Falls Melodic Sequence
 const gfMelody = [
-    { freq: 293.66, duration: 0.2 }, { freq: 349.23, duration: 0.2 }, { freq: 440.00, duration: 0.2 }, { freq: 523.25, duration: 0.2 },
-    { freq: 440.00, duration: 0.2 }, { freq: 349.23, duration: 0.2 }, { freq: 293.66, duration: 0.2 }, { freq: 349.23, duration: 0.2 },
-    { freq: 440.00, duration: 0.2 }, { freq: 523.25, duration: 0.2 }, { freq: 587.33, duration: 0.4 }, { freq: 523.25, duration: 0.4 }
+    { freq: 293.66, duration: 0.18 }, { freq: 349.23, duration: 0.18 }, { freq: 440.00, duration: 0.18 }, { freq: 523.25, duration: 0.18 },
+    { freq: 440.00, duration: 0.18 }, { freq: 349.23, duration: 0.18 }, { freq: 293.66, duration: 0.18 }, { freq: 349.23, duration: 0.18 },
+    { freq: 440.00, duration: 0.18 }, { freq: 523.25, duration: 0.18 }, { freq: 587.33, duration: 0.36 }, { freq: 523.25, duration: 0.36 }
 ];
 
 let noteIdx = 0;
 
-function playEmbeddedMusicSequence() {
+function playLoudMusicSequence() {
     if (!isAudioPlaying || !audioCtx) return;
     let time = audioCtx.currentTime;
 
     if (currentMode === 0) {
-        // Mode 0: Deep Synthwave Ambient Track
+        // Mode 0: Loud Synthwave Synth
         const notes = [220.00, 261.63, 329.63, 392.00, 440.00];
-        let note = notes[Math.floor(time * 2) % notes.length];
+        let note = notes[Math.floor(time * 3) % notes.length];
         
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
-        osc.type = 'triangle';
+        osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(note, time);
         
-        gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.05, time + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.7);
+        gain.gain.setValueAtTime(0.4, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
         
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.75);
+        osc.stop(time + 0.35);
 
     } else if (currentMode === 1) {
-        // Mode 1: Embedded Gravity Falls Theme Tune
+        // Mode 1: Loud Chiptune Gravity Falls Theme
         let noteData = gfMelody[noteIdx % gfMelody.length];
         noteIdx++;
 
@@ -452,9 +453,8 @@ function playEmbeddedMusicSequence() {
         osc.type = 'square';
         osc.frequency.setValueAtTime(noteData.freq, time);
 
-        gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.04, time + 0.03);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + noteData.duration - 0.02);
+        gain.gain.setValueAtTime(0.5, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + noteData.duration);
 
         osc.connect(gain);
         gain.connect(masterGain);
@@ -462,54 +462,42 @@ function playEmbeddedMusicSequence() {
         osc.stop(time + noteData.duration);
 
     } else if (currentMode === 2) {
-        // Mode 2: Cyber Matrix Techno Beat
+        // Mode 2: Heavy Cyber Matrix Bassline
         const synthNotes = [110.00, 130.81, 146.83, 164.81];
-        let note = synthNotes[Math.floor(time * 4) % synthNotes.length];
+        let note = synthNotes[Math.floor(time * 5) % synthNotes.length];
 
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(note, time);
 
-        gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.04, time + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
+        gain.gain.setValueAtTime(0.5, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.18);
 
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.22);
+        osc.stop(time + 0.2);
 
     } else if (currentMode === 3) {
-        // Mode 3: Overdrive Bass Pulse
+        // Mode 3: Loud Siren Alarm Pulse
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(80, time);
+        osc.frequency.setValueAtTime(440, time);
+        osc.frequency.exponentialRampToValueAtTime(880, time + 0.2);
 
-        gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.08, time + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+        gain.gain.setValueAtTime(0.6, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.25);
 
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.45);
+        osc.stop(time + 0.28);
     }
 }
 
-function triggerAudioFadeTransition() {
-    if (!audioCtx || !isAudioPlaying) return;
-    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
-    masterGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    
-    setTimeout(() => {
-        masterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.4);
-    }, 300);
-}
-
-function toggleAudio() {
+function startLoudAudio() {
     initAudio();
     const btn = document.getElementById("audio-toggle-node");
     
@@ -520,26 +508,31 @@ function toggleAudio() {
     isAudioPlaying = !isAudioPlaying;
     
     if (isAudioPlaying) {
-        btn.textContent = "🔊 AUDIO: ON";
-        btn.style.color = "#00ffcc";
-        playEmbeddedMusicSequence();
-        audioTimer = setInterval(playEmbeddedMusicSequence, 200);
+        btn.textContent = "🔊 AUDIO: PLAYING (LOUD)";
+        btn.style.background = "#00ffcc";
+        btn.style.color = "#000000";
+        btn.style.boxShadow = "0 0 20px #00ffcc";
+        playLoudMusicSequence();
+        clearInterval(audioTimer);
+        audioTimer = setInterval(playLoudMusicSequence, 160);
     } else {
-        btn.textContent = "🎵 AUDIO: OFF";
-        btn.style.color = "#ff4500";
+        btn.textContent = "🔊 CLICK HERE TO PLAY LOUD MUSIC";
+        btn.style.background = "rgba(255, 0, 85, 0.8)";
+        btn.style.color = "#ffffff";
+        btn.style.boxShadow = "0 0 15px rgba(255, 0, 85, 0.6)";
         clearInterval(audioTimer);
     }
 }
 
+// Global user click event to ensure sound permissions are granted
 document.body.addEventListener("click", () => {
-    if (!isAudioPlaying) { toggleAudio(); }
+    if (!isAudioPlaying) { startLoudAudio(); }
 }, { once: true });
 
 // --- VISUAL GRAPHICS ENGINE FOR MODES ---
 let frameAngle = 0;
 let isGlitching = false;
 
-// Glitch loop trigger every 5 seconds for Mode 1
 setInterval(() => {
     if (currentMode === 1) {
         isGlitching = true;
@@ -547,7 +540,6 @@ setInterval(() => {
     }
 }, 5000);
 
-// Mode 0: Spinning Egg Frame Generator
 function getEggFrame(angle) {
     let frameLines = [];
     const width = 30, height = 13;
@@ -575,7 +567,6 @@ function getEggFrame(angle) {
     return frameLines.join("\n");
 }
 
-// Mode 1: 3D Spinning Wireframe Pyramid / Triangle Generator
 function getPyramidFrame(angle) {
     if (isGlitching) {
         let glitchChars = "@#$%&*!?:;[]{}<>";
@@ -630,7 +621,6 @@ function getPyramidFrame(angle) {
     return canvas.map(row => row.join("")).join("\n");
 }
 
-// Mode 2: Cyber Code Rain
 function getMatrixFrame() {
     let chars = "010101010101XYZ789";
     let lines = [];
@@ -644,7 +634,6 @@ function getMatrixFrame() {
     return lines.join("\n");
 }
 
-// Mode 3: Overdrive Warning Screen
 function getWarningFrame() {
     return "\n" +
            "  ⚠️ SYSTEM OVERDRIVE ⚠️ \n\n" +
@@ -654,7 +643,6 @@ function getWarningFrame() {
            "  ======================\n";
 }
 
-// Global Animation Loop
 setInterval(() => {
     frameAngle += 0.12;
     const renderer = document.getElementById("ascii-renderer");
@@ -705,7 +693,6 @@ dial.addEventListener("pointermove", (e) => {
     if (newMode !== currentMode) {
         currentMode = newMode;
         document.getElementById("mode-display-label").textContent = "MODE: " + currentMode;
-        triggerAudioFadeTransition();
     }
 });
 
@@ -762,7 +749,7 @@ function checkCode() {
 
     switch (input) {
         case "get outta here":
-            if (isAudioPlaying) { toggleAudio(); }
+            if (isAudioPlaying) { startLoudAudio(); }
             displayMessageOnScreen("Alright good bye", 5000);
             setTimeout(() => {
                 displayMessageOnScreen(
