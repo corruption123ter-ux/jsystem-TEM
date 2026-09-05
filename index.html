@@ -854,14 +854,17 @@ function checkCode() {
             break;
         case "help":
         case "commands":
-            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear]");
+            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity]");
+            break;
+        case "Verity":
+            displayMessageOnScreen("Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>');
             break;
         case "clear":
             document.getElementById("screen-output").classList.add("hidden");
             document.getElementById("ascii-renderer").classList.remove("hidden");
             break;
         default:
-            displayMessageOnScreen("S&P Code Invalid");
+            displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!");
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
