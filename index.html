@@ -19,6 +19,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            user-select: none;
         }
 
         /* HIGH-DEFINITION PARALLAX VECTOR WARP FIELD BACKDROP */
@@ -115,6 +116,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            cursor: pointer;
         }
         .crt-screen::before {
             content: " ";
@@ -128,8 +130,8 @@
             opacity: 0.6;
         }
 
-        /* High-Definition Luminescent Shaded ASCII Egg Render Window */
-        .ascii-egg-matrix {
+        /* ASCII RENDER WINDOW */
+        .ascii-matrix {
             font-size: 11px;
             line-height: 11px;
             white-space: pre;
@@ -137,12 +139,12 @@
             font-weight: bold;
             text-shadow: 0 0 8px rgba(0, 255, 204, 0.8);
             position: absolute;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
             opacity: 1;
             z-index: 2;
         }
 
-        /* SCREEN TEXT OUTPUT CONTAINER INSIDE THE CRT SCREEN */
+        /* SCREEN TEXT OUTPUT CONTAINER */
         .crt-text-output {
             position: absolute;
             width: 85%;
@@ -151,24 +153,17 @@
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
             line-height: 1.5;
             text-align: center;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
             opacity: 0;
             z-index: 3;
             pointer-events: auto;
             word-wrap: break-word;
         }
 
-        /* FADING CONTROL CLASSES */
-        .hidden {
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-        .visible {
-            opacity: 1 !important;
-            pointer-events: auto !important;
-        }
+        .hidden { opacity: 0 !important; pointer-events: none !important; }
+        .visible { opacity: 1 !important; pointer-events: auto !important; }
 
-        /* INTERCONNECTING CORE BUS DATA HIGHWAY CABLE WIRE */
+        /* INTERCONNECTING CORE CABLE */
         .hardware-wire {
             width: 8px;
             height: 45px;
@@ -185,7 +180,7 @@
             50% { height: 52px; transform: scaleX(0.93); }
         }
 
-        /* CORE INDUSTRIAL DASHBOARD CONFIG MODULE (BOTTOM CONTAINER) */
+        /* CORE DASHBOARD MODULE */
         .inputter-deck {
             position: relative;
             z-index: 10;
@@ -243,52 +238,50 @@
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.3), inset 0 0 5px rgba(0,0,0,0.8);
         }
 
-        /* Middle Section: Clean Brushed Steel Calibration Tuning Selector Dial */
+        /* Middle Section: Interactive Rotary Dial */
         .dial-knob-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             width: 80px;
-            height: 80px;
+            height: 95px;
+        }
+        .dial-label {
+            font-size: 9px;
+            color: #00ffcc;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
         .dial-knob {
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, #3a3e4f 0%, #1c1e26 100%);
-            border: 2px solid #090a0f;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15);
-            animation: dynamicSelectorTurn 14s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        .dial-knob-container::before {
-            content: "";
-            position: absolute;
             width: 58px;
             height: 58px;
+            background: radial-gradient(circle, #3a3e4f 0%, #1c1e26 100%);
+            border: 2px solid #00ffcc;
             border-radius: 50%;
-            border: 1px dashed rgba(0, 255, 204, 0.25);
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5), 0 0 10px rgba(0,255,204,0.2);
+            cursor: grab;
+            touch-action: none;
+        }
+        .dial-knob:active {
+            cursor: grabbing;
         }
         .dial-pointer-notch {
             position: absolute;
-            width: 3px;
-            height: 12px;
+            width: 4px;
+            height: 14px;
             background-color: #00ffcc;
             top: 4px;
-            left: 23px;
-            border-radius: 1px;
-            box-shadow: 0 0 4px #00ffcc;
-        }
-        @keyframes dynamicSelectorTurn {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(60deg); }
-            45% { transform: rotate(-45deg); }
-            75% { transform: rotate(140deg); }
-            90% { transform: rotate(30deg); }
+            left: 27px;
+            border-radius: 2px;
+            box-shadow: 0 0 6px #00ffcc;
+            pointer-events: none;
         }
 
-        /* Right Section: Clean Aerospace Heavy Actuator Override Execution Trigger */
+        /* Right Section: Launch Button */
         .action-button-bay {
             width: 105px;
             height: 95px;
@@ -325,16 +318,9 @@
             margin-top: 20px;
             text-shadow: 0 -1px 2px rgba(0,0,0,0.7);
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            user-select: none;
-        }
-        a {
-            color: #00ffcc;
-            text-decoration: underline;
-            font-weight: bold;
-            text-shadow: 0 0 3px rgba(0,255,204,0.3);
         }
 
-        /* Ambient Audio Controller Overlay Toggle */
+        /* Ambient Audio Controller */
         .audio-deck-control {
             position: absolute;
             bottom: 15px;
@@ -379,8 +365,8 @@
     <div class="bracket br"></div>
 
     <div class="crt-screen-container">
-        <div class="crt-screen">
-            <div class="ascii-egg-matrix" id="egg-renderer"></div>
+        <div class="crt-screen" id="crt-screen-trigger" onclick="handleScreenClick()">
+            <div class="ascii-matrix" id="ascii-renderer"></div>
             <div class="crt-text-output hidden" id="screen-output"></div>
         </div>
     </div>
@@ -394,7 +380,8 @@
     </div>
 
     <div class="dial-knob-container">
-        <div class="dial-knob">
+        <div class="dial-label" id="mode-display-label">MODE: 0</div>
+        <div class="dial-knob" id="rotary-dial">
             <div class="dial-pointer-notch"></div>
         </div>
     </div>
@@ -407,51 +394,111 @@
 </div>
 
 <script>
-// --- NOSTALGIC SYNTHESIZER AUDIO GENERATOR ---
+// --- AUDIO ENGINE WITH SMOOTH FADING ---
 let audioCtx = null;
 let isAudioPlaying = false;
 let audioTimer = null;
+let currentMode = 0;
+let masterGain = null;
 
 function initAudio() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
     }
 }
 
-function playNostalgicArpeggio() {
+function playAudioSequence() {
     if (!isAudioPlaying || !audioCtx) return;
-    
-    // Nostalgic synth-wave chord progressions (Hz)
-    const notes = [
-        [220.00, 261.63, 329.63, 392.00], // A minor 7
-        [174.61, 220.00, 261.63, 329.63], // F major 7
-        [130.81, 164.81, 196.00, 246.94], // C major 7
-        [146.83, 174.61, 220.00, 261.63]  // D minor 7
-    ];
-    
     let time = audioCtx.currentTime;
-    let chordIdx = Math.floor(time / 2) % notes.length;
-    let chord = notes[chordIdx];
-    
-    // Create soft nostalgic triangle waves
-    chord.forEach((freq, i) => {
+
+    if (currentMode === 0) {
+        // Mode 0: Soft Nostalgic Synth-Wave
+        const notes = [220.00, 261.63, 329.63, 392.00, 440.00];
+        let note = notes[Math.floor(time * 2) % notes.length];
+        
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
-        
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, time);
+        osc.frequency.setValueAtTime(note, time);
         
-        // Soft ambient envelope
-        gain.gain.setValueAtTime(0, time);
-        gain.gain.linearRampToValueAtTime(0.03, time + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 1.8);
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.04, time + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.8);
         
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        osc.start(time + (i * 0.15));
-        osc.stop(time + 2.0);
-    });
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.9);
+
+    } else if (currentMode === 1) {
+        // Mode 1: Gravity Falls Mystery Melody
+        const gfNotes = [293.66, 349.23, 440.00, 523.25, 440.00, 349.23];
+        let note = gfNotes[Math.floor(time * 3) % gfNotes.length];
+
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(note, time);
+
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.05, time + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.45);
+
+    } else if (currentMode === 2) {
+        // Mode 2: Cyber Matrix Synth Beat
+        const synthNotes = [110.00, 130.81, 146.83, 164.81];
+        let note = synthNotes[Math.floor(time * 4) % synthNotes.length];
+
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(note, time);
+
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.03, time + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.3);
+
+    } else if (currentMode === 3) {
+        // Mode 3: Overdrive Warning Pulse
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(80, time);
+
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.06, time + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(time);
+        osc.stop(time + 0.55);
+    }
+}
+
+function triggerAudioFadeTransition() {
+    if (!audioCtx || !isAudioPlaying) return;
+    // Fade out briefly, then restore
+    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+    masterGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    
+    setTimeout(() => {
+        masterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.4);
+    }, 300);
 }
 
 function toggleAudio() {
@@ -467,8 +514,8 @@ function toggleAudio() {
     if (isAudioPlaying) {
         btn.textContent = "🔊 AUDIO: ON";
         btn.style.color = "#00ffcc";
-        playNostalgicArpeggio();
-        audioTimer = setInterval(playNostalgicArpeggio, 1600);
+        playAudioSequence();
+        audioTimer = setInterval(playAudioSequence, 200);
     } else {
         btn.textContent = "🎵 AUDIO: OFF";
         btn.style.color = "#ff4500";
@@ -476,29 +523,33 @@ function toggleAudio() {
     }
 }
 
-// Auto-start sound on user's first interaction anywhere on screen
 document.body.addEventListener("click", () => {
-    if (!isAudioPlaying) {
-        toggleAudio();
-    }
+    if (!isAudioPlaying) { toggleAudio(); }
 }, { once: true });
 
-// --- 3D PERSPECTIVE CALCULATIONS FOR HIGH-DEFINITION SLOW SPINNING SPACE EGG ---
-const eggFrames = [];
-const numFrames = 24;
-const width = 30, height = 13;
+// --- VISUAL GRAPHICS ENGINE FOR MODES ---
+let frameAngle = 0;
+let isGlitching = false;
 
-for (let f = 0; f < numFrames; f++) {
+// Glitch loop trigger every 5 seconds for Mode 1
+setInterval(() => {
+    if (currentMode === 1) {
+        isGlitching = true;
+        setTimeout(() => { isGlitching = false; }, 800);
+    }
+}, 5000);
+
+// Mode 0: Spinning Egg Frame Generator
+function getEggFrame(angle) {
     let frameLines = [];
-    let angle = (f / numFrames) * Math.PI * 2;
+    const width = 30, height = 13;
     for (let y = 0; y < height; y++) {
         let line = "";
         let normalizedY = (y / (height - 1)) * 2 - 1;
         let eggWidthFactor = Math.sqrt(1 - normalizedY * normalizedY) * (1.1 - 0.25 * normalizedY);
         let bound = Math.round(10 * eggWidthFactor);
         for (let x = 0; x < width; x++) {
-            let centerX = Math.round(width / 2);
-            let distFromCenter = x - centerX;
+            let distFromCenter = x - Math.round(width / 2);
             if (Math.abs(distFromCenter) <= bound && bound > 0) {
                 let nx = distFromCenter / bound;
                 let surfaceAngle = Math.asin(nx) + angle;
@@ -513,46 +564,182 @@ for (let f = 0; f < numFrames; f++) {
         }
         frameLines.push(line);
     }
-    eggFrames.push(frameLines.join("\n"));
+    return frameLines.join("\n");
 }
 
-let currentFrameIdx = 0;
+// Mode 1: 3D Spinning Wireframe Pyramid / Triangle Generator
+function getPyramidFrame(angle) {
+    if (isGlitching) {
+        let glitchChars = "@#$%&*!?:;[]{}<>";
+        let glitchStr = "";
+        for (let i = 0; i < 12; i++) {
+            for (let j = 0; j < 25; j++) {
+                glitchStr += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+            }
+            glitchStr += "\n";
+        }
+        return glitchStr;
+    }
+
+    let canvas = Array(12).fill("").map(() => Array(28).fill(" "));
+    let cx = 14, cy = 6;
+    let cosA = Math.cos(angle), sinA = Math.sin(angle);
+
+    // 3D Vertices for a Pyramid
+    let nodes = [
+        [0, -4, 0],
+        [-5, 4, -4],
+        [5, 4, -4],
+        [0, 4, 5]
+    ];
+
+    // Rotate and Project
+    let projected = nodes.map(node => {
+        let x = node[0] * cosA - node[2] * sinA;
+        let z = node[0] * sinA + node[2] * cosA;
+        let y = node[1];
+        return [Math.round(cx + x * 1.8), Math.round(cy + y)];
+    });
+
+    // Draw Line helper
+    function drawLine(p1, p2, char) {
+        let dx = Math.abs(p2[0] - p1[0]), dy = Math.abs(p2[1] - p1[1]);
+        let sx = p1[0] < p2[0] ? 1 : -1, sy = p1[1] < p2[1] ? 1 : -1;
+        let err = dx - dy, x = p1[0], y = p1[1];
+        while (true) {
+            if (y >= 0 && y < 12 && x >= 0 && x < 28) canvas[y][x] = char;
+            if (x === p2[0] && y === p2[1]) break;
+            let e2 = 2 * err;
+            if (e2 > -dy) { err -= dy; x += sx; }
+            if (e2 < dx) { err += dx; y += sy; }
+        }
+    }
+
+    // Connect Pyramid Edges
+    drawLine(projected[0], projected[1], "▲");
+    drawLine(projected[0], projected[2], "▲");
+    drawLine(projected[0], projected[3], "▲");
+    drawLine(projected[1], projected[2], "═");
+    drawLine(projected[2], projected[3], "═");
+    drawLine(projected[3], projected[1], "═");
+
+    return canvas.map(row => row.join("")).join("\n");
+}
+
+// Mode 2: Cyber Code Rain
+function getMatrixFrame() {
+    let chars = "010101010101XYZ789";
+    let lines = [];
+    for (let i = 0; i < 11; i++) {
+        let line = "";
+        for (let j = 0; j < 26; j++) {
+            line += Math.random() > 0.6 ? chars[Math.floor(Math.random() * chars.length)] : " ";
+        }
+        lines.push(line);
+    }
+    return lines.join("\n");
+}
+
+// Mode 3: Overdrive Warning Screen
+function getWarningFrame() {
+    return "\n" +
+           "  ⚠️ SYSTEM OVERDRIVE ⚠️ \n\n" +
+           "  ======================\n" +
+           "  CORE TEMP: EXCEEDED\n" +
+           "  STATUS: CRITICAL\n" +
+           "  ======================\n";
+}
+
+// Global Animation Loop
 setInterval(() => {
-    document.getElementById("egg-renderer").textContent = eggFrames[currentFrameIdx];
-    currentFrameIdx = (currentFrameIdx + 1) % numFrames;
-}, 120);
+    frameAngle += 0.12;
+    const renderer = document.getElementById("ascii-renderer");
 
-// --- SCREEN FADE DISPLAY LOGIC ---
-let fadeTimeout = null;
+    if (currentMode === 0) {
+        renderer.style.color = "#00ffcc";
+        renderer.textContent = getEggFrame(frameAngle);
+    } else if (currentMode === 1) {
+        renderer.style.color = isGlitching ? "#ff0055" : "#ffff00";
+        renderer.textContent = getPyramidFrame(frameAngle);
+    } else if (currentMode === 2) {
+        renderer.style.color = "#00ff66";
+        renderer.textContent = getMatrixFrame();
+    } else if (currentMode === 3) {
+        renderer.style.color = "#ff3333";
+        renderer.textContent = getWarningFrame();
+    }
+}, 100);
 
-function displayMessageOnScreen(messageHTML, holdTime = 10000) {
-    const eggElement = document.getElementById("egg-renderer");
-    const screenOutput = document.getElementById("screen-output");
+// --- ROTARY DIAL INTERACTION LOGIC ---
+const dial = document.getElementById("rotary-dial");
+let isDragging = false;
+let startAngle = 0;
+let currentRotation = 0;
 
-    if (fadeTimeout) clearTimeout(fadeTimeout);
+function getAngle(e) {
+    const rect = dial.getBoundingClientRect();
+    const center = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return Math.atan2(clientY - center.y, clientX - center.x) * (180 / Math.PI);
+}
 
-    screenOutput.innerHTML = messageHTML;
+dial.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    startAngle = getAngle(e) - currentRotation;
+    dial.setPointerCapture(e.pointerId);
+});
 
-    eggElement.classList.add("hidden");
-    eggElement.classList.remove("visible");
-    screenOutput.classList.remove("hidden");
-    screenOutput.classList.add("visible");
+dial.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    currentRotation = getAngle(e) - startAngle;
+    dial.style.transform = `rotate(${currentRotation}deg)`;
 
-    if (holdTime > 0) {
-        fadeTimeout = setTimeout(() => {
-            screenOutput.classList.add("hidden");
-            screenOutput.classList.remove("visible");
-            eggElement.classList.remove("hidden");
-            eggElement.classList.add("visible");
-        }, holdTime);
+    // Calculate Mode based on rotation angle (4 Modes: 0, 1, 2, 3)
+    let normalizedDegree = (currentRotation % 360 + 360) % 360;
+    let newMode = Math.floor(normalizedDegree / 90);
+
+    if (newMode !== currentMode) {
+        currentMode = newMode;
+        document.getElementById("mode-display-label").textContent = "MODE: " + currentMode;
+        triggerAudioFadeTransition();
+    }
+});
+
+dial.addEventListener("pointerup", (e) => {
+    isDragging = false;
+});
+
+// --- SCREEN CLICK INTERACTION ---
+function handleScreenClick() {
+    if (currentMode === 1) {
+        window.location.href = "https://thisisnotawebsitedotcom.com";
     }
 }
 
-// --- SECURE SECURITY LOG MATCH PASSWORD AUTOMATION REGISTRY ---
+// --- COMMAND INTERCEPT LOGIC ---
 let currentState = "idle";
 document.getElementById("code-input").addEventListener("keypress", function(event) {
     if (event.key === "Enter") { checkCode(); }
 });
+
+function displayMessageOnScreen(messageHTML, holdTime = 10000) {
+    const asciiElement = document.getElementById("ascii-renderer");
+    const screenOutput = document.getElementById("screen-output");
+
+    screenOutput.innerHTML = messageHTML;
+    asciiElement.classList.add("hidden");
+    screenOutput.classList.remove("hidden");
+    screenOutput.classList.add("visible");
+
+    if (holdTime > 0) {
+        setTimeout(() => {
+            screenOutput.classList.add("hidden");
+            screenOutput.classList.remove("visible");
+            asciiElement.classList.remove("hidden");
+        }, holdTime);
+    }
+}
 
 function checkCode() {
     const inputField = document.getElementById("code-input");
@@ -561,9 +748,7 @@ function checkCode() {
     if (currentState === "awaiting_jeorgie_interest") {
         if (input === "yes" || input === "y") {
             displayMessageOnScreen("DISPATCHING SECURE GATEWAY ROUTE TO PILOT DATABANK via REDDIT...");
-            setTimeout(() => {
-                window.location.href = "https://www.reddit.com/user/Cool-Technician-7609/";
-            }, 1000);
+            setTimeout(() => { window.location.href = "https://www.reddit.com/user/Cool-Technician-7609/"; }, 1000);
         } else {
             displayMessageOnScreen("CONVERSATION TREE FLUSHED. MAIN MATRIX REBOOT COMPLETED.");
             currentState = "idle";
@@ -574,65 +759,32 @@ function checkCode() {
 
     switch (input) {
         case "get outta here":
-            // 1. Stop Audio
-            if (isAudioPlaying) {
-                toggleAudio();
-            }
-
-            // 2. Display "Alright good bye" for 5 seconds
+            if (isAudioPlaying) { toggleAudio(); }
             displayMessageOnScreen("Alright good bye", 5000);
-
-            // 3. After 5 seconds, show Error Message for 10 seconds, then redirect
             setTimeout(() => {
                 displayMessageOnScreen(
                     "<span style='color: #ff3333;'>❌ ERROR ❌<br>YB-Jeorgie has something to say:<br>Well if your rude, then get Kicked out</span>", 
                     10000
                 );
-
                 setTimeout(() => {
                     window.location.href = "https://www.google.com/search?q=Find+me+a+Therapist+to+Help+me+over+come+cussing";
                 }, 10000);
             }, 5000);
             break;
         case "estregg":
-            displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
+            displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
             break;
         case "jeorgie":
         case "yb-jeorgie":
             displayMessageOnScreen("HOHO, YA INTERESTED IN HIM?<br>INPUT [YES] OR [NO] INTO TRANSLATION BUFFER.");
             currentState = "awaiting_jeorgie_interest";
             break;
-        case "egg":
-        case "space":
-            displayMessageOnScreen("TELEMETRY DATA: ASSET MATRICES ARE REVOLVING STABLY IN SECURE ISOLATION OVERLAY.");
-            break;
-        case "hacker":
-        case "virus":
-            displayMessageOnScreen("INTEGRITY PROTOCOL: VERIFIED SAFE PACKAGING PIPX FILE ENVIRONMENT. 0 MALWARE RECOGNIZED.");
-            break;
-        case "gamepad":
-        case "controller":
-            displayMessageOnScreen("SYSTEM LOG ERROR SHIELD: PAD LOGIC STRIPPED PERMANENTLY TO PREVENT SYSTEM SECTOR ENGINE FAULTS.");
-            break;
         case "bill":
         case "cipher":
             displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
             break;
-        case "python":
-        case "curses":
-        case "wine":
-            displayMessageOnScreen("OHH you read that on The Repo");
-            break;
-        case "mother fucker":
-        case "shit":
-        case "fuck you bitch":
-            displayMessageOnScreen("❌S&P Invalid Code!❌<br>Wash your Dirty Mouth Of Yours with Soap");
-            break;
-        case "":
-            displayMessageOnScreen("TELEMETRY STATUS: ACTIVE. AWAITING DATA TRANSFERS.");
-            break;
         default:
-            displayMessageOnScreen("❌INCORRECT HANDSHAKE CODE❌");
+            displayMessageOnScreen("❌ INCORRECT HANDSHAKE CODE ❌");
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
