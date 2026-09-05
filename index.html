@@ -49,7 +49,6 @@
             to { transform: translateY(-50%); }
         }
 
-        /* --- INFO BOX TOP RIGHT --- */
         .info-box-top-right {
             position: absolute;
             top: max(1vh, 10px);
@@ -391,7 +390,6 @@
     <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudioSystem()">🔊 AUDIO SYSTEM: READY (CLICK TO START)</button>
 </div>
 
-<!-- TOP RIGHT INFO BOX -->
 <div class="info-box-top-right">
     <strong>YOU FOUND THE SECRET WEBSITE BASED ON THE README.md!</strong>
     <div>PILOT: YB-Jeorgie</div>
@@ -436,7 +434,6 @@
 </div>
 
 <script>
-// --- WEB AUDIO API SYNTHESIZER ---
 let audioCtx = null;
 let isAudioEnabled = false;
 let audioLoopInterval = null;
@@ -558,7 +555,6 @@ document.body.addEventListener("click", () => {
     if (!isAudioEnabled) { toggleAudioSystem(); }
 }, { once: true });
 
-// --- VISUAL GRAPHICS ENGINE (MODES 1 - 8) ---
 let frameAngle = 0;
 let isGlitching = false;
 
@@ -765,7 +761,6 @@ setInterval(() => {
     }
 }, 100);
 
-// --- ROTARY DIAL LOGIC ---
 const dial = document.getElementById("rotary-dial");
 let isDragging = false;
 let startAngle = 0;
@@ -804,14 +799,12 @@ dial.addEventListener("pointerup", (e) => {
     isDragging = false;
 });
 
-// --- SCREEN CLICK INTERACTION ---
 function handleScreenClick() {
     if (currentMode === 2) {
         window.location.href = "https://thisisnotawebsitedotcom.com";
     }
 }
 
-// --- COMMAND INTERCEPT LOGIC ---
 let currentState = "idle";
 document.getElementById("code-input").addEventListener("keypress", function(event) {
     if (event.key === "Enter") { checkCode(); }
