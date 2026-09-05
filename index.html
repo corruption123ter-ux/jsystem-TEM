@@ -394,7 +394,7 @@
 </div>
 
 <script>
-// --- AUDIO ENGINE WITH SMOOTH FADING ---
+// --- EMBEDDED AUDIO GENERATOR & MUSIC SYNTH ENGINE ---
 let audioCtx = null;
 let isAudioPlaying = false;
 let audioTimer = null;
@@ -405,17 +405,26 @@ function initAudio() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        masterGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
         masterGain.connect(audioCtx.destination);
     }
 }
 
-function playAudioSequence() {
+// Melody & Chords for Mode 1 (Gravity Falls Theme)
+const gfMelody = [
+    { freq: 293.66, duration: 0.2 }, { freq: 349.23, duration: 0.2 }, { freq: 440.00, duration: 0.2 }, { freq: 523.25, duration: 0.2 },
+    { freq: 440.00, duration: 0.2 }, { freq: 349.23, duration: 0.2 }, { freq: 293.66, duration: 0.2 }, { freq: 349.23, duration: 0.2 },
+    { freq: 440.00, duration: 0.2 }, { freq: 523.25, duration: 0.2 }, { freq: 587.33, duration: 0.4 }, { freq: 523.25, duration: 0.4 }
+];
+
+let noteIdx = 0;
+
+function playEmbeddedMusicSequence() {
     if (!isAudioPlaying || !audioCtx) return;
     let time = audioCtx.currentTime;
 
     if (currentMode === 0) {
-        // Mode 0: Soft Nostalgic Synth-Wave
+        // Mode 0: Deep Synthwave Ambient Track
         const notes = [220.00, 261.63, 329.63, 392.00, 440.00];
         let note = notes[Math.floor(time * 2) % notes.length];
         
@@ -425,35 +434,35 @@ function playAudioSequence() {
         osc.frequency.setValueAtTime(note, time);
         
         gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.04, time + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.8);
+        gain.gain.linearRampToValueAtTime(0.05, time + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.7);
         
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.9);
+        osc.stop(time + 0.75);
 
     } else if (currentMode === 1) {
-        // Mode 1: Gravity Falls Mystery Melody
-        const gfNotes = [293.66, 349.23, 440.00, 523.25, 440.00, 349.23];
-        let note = gfNotes[Math.floor(time * 3) % gfNotes.length];
+        // Mode 1: Embedded Gravity Falls Theme Tune
+        let noteData = gfMelody[noteIdx % gfMelody.length];
+        noteIdx++;
 
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(note, time);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(noteData.freq, time);
 
         gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.05, time + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+        gain.gain.linearRampToValueAtTime(0.04, time + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + noteData.duration - 0.02);
 
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.45);
+        osc.stop(time + noteData.duration);
 
     } else if (currentMode === 2) {
-        // Mode 2: Cyber Matrix Synth Beat
+        // Mode 2: Cyber Matrix Techno Beat
         const synthNotes = [110.00, 130.81, 146.83, 164.81];
         let note = synthNotes[Math.floor(time * 4) % synthNotes.length];
 
@@ -463,41 +472,40 @@ function playAudioSequence() {
         osc.frequency.setValueAtTime(note, time);
 
         gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.03, time + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+        gain.gain.linearRampToValueAtTime(0.04, time + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
 
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.3);
+        osc.stop(time + 0.22);
 
     } else if (currentMode === 3) {
-        // Mode 3: Overdrive Warning Pulse
+        // Mode 3: Overdrive Bass Pulse
         let osc = audioCtx.createOscillator();
         let gain = audioCtx.createGain();
-        osc.type = 'square';
+        osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(80, time);
 
         gain.gain.setValueAtTime(0.001, time);
-        gain.gain.linearRampToValueAtTime(0.06, time + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+        gain.gain.linearRampToValueAtTime(0.08, time + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
 
         osc.connect(gain);
         gain.connect(masterGain);
         osc.start(time);
-        osc.stop(time + 0.55);
+        osc.stop(time + 0.45);
     }
 }
 
 function triggerAudioFadeTransition() {
     if (!audioCtx || !isAudioPlaying) return;
-    // Fade out briefly, then restore
     masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
     masterGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
     
     setTimeout(() => {
         masterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        masterGain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.4);
+        masterGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.4);
     }, 300);
 }
 
@@ -514,8 +522,8 @@ function toggleAudio() {
     if (isAudioPlaying) {
         btn.textContent = "🔊 AUDIO: ON";
         btn.style.color = "#00ffcc";
-        playAudioSequence();
-        audioTimer = setInterval(playAudioSequence, 200);
+        playEmbeddedMusicSequence();
+        audioTimer = setInterval(playEmbeddedMusicSequence, 200);
     } else {
         btn.textContent = "🎵 AUDIO: OFF";
         btn.style.color = "#ff4500";
@@ -585,7 +593,6 @@ function getPyramidFrame(angle) {
     let cx = 14, cy = 6;
     let cosA = Math.cos(angle), sinA = Math.sin(angle);
 
-    // 3D Vertices for a Pyramid
     let nodes = [
         [0, -4, 0],
         [-5, 4, -4],
@@ -593,7 +600,6 @@ function getPyramidFrame(angle) {
         [0, 4, 5]
     ];
 
-    // Rotate and Project
     let projected = nodes.map(node => {
         let x = node[0] * cosA - node[2] * sinA;
         let z = node[0] * sinA + node[2] * cosA;
@@ -601,7 +607,6 @@ function getPyramidFrame(angle) {
         return [Math.round(cx + x * 1.8), Math.round(cy + y)];
     });
 
-    // Draw Line helper
     function drawLine(p1, p2, char) {
         let dx = Math.abs(p2[0] - p1[0]), dy = Math.abs(p2[1] - p1[1]);
         let sx = p1[0] < p2[0] ? 1 : -1, sy = p1[1] < p2[1] ? 1 : -1;
@@ -615,7 +620,6 @@ function getPyramidFrame(angle) {
         }
     }
 
-    // Connect Pyramid Edges
     drawLine(projected[0], projected[1], "▲");
     drawLine(projected[0], projected[2], "▲");
     drawLine(projected[0], projected[3], "▲");
@@ -695,7 +699,6 @@ dial.addEventListener("pointermove", (e) => {
     currentRotation = getAngle(e) - startAngle;
     dial.style.transform = `rotate(${currentRotation}deg)`;
 
-    // Calculate Mode based on rotation angle (4 Modes: 0, 1, 2, 3)
     let normalizedDegree = (currentRotation % 360 + 360) % 360;
     let newMode = Math.floor(normalizedDegree / 90);
 
