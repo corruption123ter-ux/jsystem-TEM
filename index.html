@@ -103,14 +103,15 @@
         .crt-screen {
             background: radial-gradient(circle at center, #051412 0%, #010304 100%);
             border-radius: 8px;
-            padding: 15px;
-            min-height: 210px;
+            padding: 10px;
+            height: 210px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             cursor: pointer;
+            box-sizing: border-box;
         }
         .crt-screen::before {
             content: " ";
@@ -125,16 +126,17 @@
         }
 
         .ascii-matrix {
-            font-size: 11px;
-            line-height: 11px;
+            font-size: 10px;
+            line-height: 10px;
             white-space: pre;
             color: #00ffcc;
             font-weight: bold;
             text-shadow: 0 0 8px rgba(0, 255, 204, 0.8);
             position: absolute;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.3s ease-in-out;
             opacity: 1;
             z-index: 2;
+            text-align: center;
         }
 
         .crt-text-output {
@@ -145,7 +147,7 @@
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
             line-height: 1.4;
             text-align: center;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.3s ease-in-out;
             opacity: 0;
             z-index: 3;
             pointer-events: auto;
@@ -367,7 +369,7 @@
     </div>
 
     <div class="dial-knob-container">
-        <div class="dial-label" id="mode-display-label">MODE: 0</div>
+        <div class="dial-label" id="mode-display-label">MODE: 1</div>
         <div class="dial-knob" id="rotary-dial">
             <div class="dial-pointer-notch"></div>
         </div>
@@ -385,7 +387,7 @@
 let audioCtx = null;
 let isAudioEnabled = false;
 let audioLoopInterval = null;
-let currentMode = 0;
+let currentMode = 1;
 
 function initAudioContext() {
     if (!audioCtx) {
@@ -426,7 +428,15 @@ function syncAudioToMode() {
     if (!isAudioEnabled) return;
 
     if (currentMode === 1) {
-        // Mode 1: Gravity Falls / Weirdmageddon Theme Synth Loop
+        // Mode 1: Classic Terminal Vibes (Rhythmic Cyber Beeps)
+        const terminalNotes = [440, 880, 554.37, 659.25, 783.99, 1046.50];
+        let idx = 0;
+        audioLoopInterval = setInterval(() => {
+            playNote(terminalNotes[idx], 'sine', 0.1, 0.08);
+            idx = (idx + 1) % terminalNotes.length;
+        }, 200);
+    } else if (currentMode === 2) {
+        // Mode 2: Gravity Falls / Weirdmageddon Theme Loop
         const gfMelody = [
             { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
             { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
@@ -439,12 +449,45 @@ function syncAudioToMode() {
             playNote(note.f, 'sawtooth', note.d, 0.12);
             idx = (idx + 1) % gfMelody.length;
         }, 180);
-    } else if (currentMode === 2) {
-        // Mode 2: Terminal Access Glitch / Data Stream Sound
+    } else if (currentMode === 3) {
+        // Mode 3: Matrix Cyber Stream
         audioLoopInterval = setInterval(() => {
             let randomFreq = Math.floor(Math.random() * 800) + 200;
             playNote(randomFreq, 'square', 0.08, 0.05);
         }, 100);
+    } else if (currentMode === 4) {
+        // Mode 4: Critical Error Siren
+        let toggle = false;
+        audioLoopInterval = setInterval(() => {
+            playNote(toggle ? 880 : 440, 'sawtooth', 0.2, 0.15);
+            toggle = !toggle;
+        }, 250);
+    } else if (currentMode === 5) {
+        // Mode 5: Cosmic Nebula Deep Synth
+        const spaceNotes = [110, 164.81, 220, 329.63];
+        let idx = 0;
+        audioLoopInterval = setInterval(() => {
+            playNote(spaceNotes[idx], 'sine', 0.6, 0.18);
+            idx = (idx + 1) % spaceNotes.length;
+        }, 400);
+    } else if (currentMode === 6) {
+        // Mode 6: Retro Synthwave Bass
+        const bassLine = [65.41, 65.41, 82.41, 98.00];
+        let idx = 0;
+        audioLoopInterval = setInterval(() => {
+            playNote(bassLine[idx], 'sawtooth', 0.15, 0.15);
+            idx = (idx + 1) % bassLine.length;
+        }, 160);
+    } else if (currentMode === 7) {
+        // Mode 7: Nuclear Reactor Core Pulse
+        audioLoopInterval = setInterval(() => {
+            playNote(60, 'square', 0.3, 0.2);
+        }, 500);
+    } else if (currentMode === 8) {
+        // Mode 8: Quantum Glitch High-Speed Stutter
+        audioLoopInterval = setInterval(() => {
+            playNote(1200 + Math.random() * 800, 'sawtooth', 0.04, 0.06);
+        }, 60);
     }
 }
 
@@ -470,25 +513,26 @@ document.body.addEventListener("click", () => {
     if (!isAudioEnabled) { toggleAudioSystem(); }
 }, { once: true });
 
-// --- VISUAL GRAPHICS ENGINE FOR MODES ---
+// --- VISUAL GRAPHICS ENGINE (MODES 1 - 8) ---
 let frameAngle = 0;
 let isGlitching = false;
 
 setInterval(() => {
-    if (currentMode === 1) {
+    if (currentMode === 2) {
         isGlitching = true;
         setTimeout(() => { isGlitching = false; }, 800);
     }
 }, 5000);
 
+// Mode 1: Egg Frame
 function getEggFrame(angle) {
     let frameLines = [];
-    const width = 30, height = 13;
+    const width = 24, height = 11;
     for (let y = 0; y < height; y++) {
         let line = "";
         let normalizedY = (y / (height - 1)) * 2 - 1;
         let eggWidthFactor = Math.sqrt(1 - normalizedY * normalizedY) * (1.1 - 0.25 * normalizedY);
-        let bound = Math.round(10 * eggWidthFactor);
+        let bound = Math.round(8 * eggWidthFactor);
         for (let x = 0; x < width; x++) {
             let distFromCenter = x - Math.round(width / 2);
             if (Math.abs(distFromCenter) <= bound && bound > 0) {
@@ -508,12 +552,13 @@ function getEggFrame(angle) {
     return frameLines.join("\n");
 }
 
+// Mode 2: Bill Cipher Pyramid (Resized to match Egg)
 function getPyramidFrame(angle) {
     if (isGlitching) {
         let glitchChars = "@#$%&*!?:;[]{}<>";
         let glitchStr = "";
-        for (let i = 0; i < 12; i++) {
-            for (let j = 0; j < 25; j++) {
+        for (let i = 0; i < 11; i++) {
+            for (let j = 0; j < 24; j++) {
                 glitchStr += glitchChars[Math.floor(Math.random() * glitchChars.length)];
             }
             glitchStr += "\n";
@@ -521,22 +566,22 @@ function getPyramidFrame(angle) {
         return glitchStr;
     }
 
-    let canvas = Array(12).fill("").map(() => Array(28).fill(" "));
-    let cx = 14, cy = 6;
+    let canvas = Array(11).fill("").map(() => Array(24).fill(" "));
+    let cx = 12, cy = 5;
     let cosA = Math.cos(angle), sinA = Math.sin(angle);
 
     let nodes = [
-        [0, -4, 0],
-        [-5, 4, -4],
-        [5, 4, -4],
-        [0, 4, 5]
+        [0, -3.5, 0],
+        [-4, 3.5, -3],
+        [4, 3.5, -3],
+        [0, 3.5, 4]
     ];
 
     let projected = nodes.map(node => {
         let x = node[0] * cosA - node[2] * sinA;
         let z = node[0] * sinA + node[2] * cosA;
         let y = node[1];
-        return [Math.round(cx + x * 1.8), Math.round(cy + y)];
+        return [Math.round(cx + x * 1.4), Math.round(cy + y)];
     });
 
     function drawLine(p1, p2, char) {
@@ -544,7 +589,7 @@ function getPyramidFrame(angle) {
         let sx = p1[0] < p2[0] ? 1 : -1, sy = p1[1] < p2[1] ? 1 : -1;
         let err = dx - dy, x = p1[0], y = p1[1];
         while (true) {
-            if (y >= 0 && y < 12 && x >= 0 && x < 28) canvas[y][x] = char;
+            if (y >= 0 && y < 11 && x >= 0 && x < 24) canvas[y][x] = char;
             if (x === p2[0] && y === p2[1]) break;
             let e2 = 2 * err;
             if (e2 > -dy) { err -= dy; x += sx; }
@@ -562,12 +607,13 @@ function getPyramidFrame(angle) {
     return canvas.map(row => row.join("")).join("\n");
 }
 
+// Mode 3: Matrix
 function getMatrixFrame() {
-    let chars = "010101010101XYZ789";
+    let chars = "0101XYZ789";
     let lines = [];
     for (let i = 0; i < 11; i++) {
         let line = "";
-        for (let j = 0; j < 26; j++) {
+        for (let j = 0; j < 24; j++) {
             line += Math.random() > 0.6 ? chars[Math.floor(Math.random() * chars.length)] : " ";
         }
         lines.push(line);
@@ -575,35 +621,116 @@ function getMatrixFrame() {
     return lines.join("\n");
 }
 
+// Mode 4: Warning
 function getWarningFrame() {
     return "\n" +
-           "  ⚠️ SYSTEM OVERDRIVE ⚠️ \n\n" +
-           "  ======================\n" +
-           "  CORE TEMP: EXCEEDED\n" +
+           "  ⚠️ OVERDRIVE ⚠️ \n\n" +
+           "  =================\n" +
+           "  TEMP: EXCEEDED\n" +
            "  STATUS: CRITICAL\n" +
-           "  ======================\n";
+           "  =================\n";
 }
 
+// Mode 5: Cosmic Nebula Portal
+function getNebulaFrame(angle) {
+    let lines = [];
+    for (let y = 0; y < 11; y++) {
+        let line = "";
+        for (let x = 0; x < 24; x++) {
+            let dx = x - 12, dy = y - 5;
+            let dist = Math.sqrt(dx * dx + dy * dy * 2);
+            let val = Math.sin(dist - angle * 2);
+            if (val > 0.6) line += "★";
+            else if (val > 0.2) line += "*";
+            else if (val > -0.3) line += ".";
+            else line += " ";
+        }
+        lines.push(line);
+    }
+    return lines.join("\n");
+}
+
+// Mode 6: Retro Grid
+function getGridFrame(angle) {
+    let lines = [];
+    for (let y = 0; y < 11; y++) {
+        let line = "";
+        for (let x = 0; x < 24; x++) {
+            if (y === 10 || y === 8 || y === 5) line += "═";
+            else if (x % 4 === 0 && y > 4) line += "║";
+            else line += " ";
+        }
+        lines.push(line);
+    }
+    return lines.join("\n");
+}
+
+// Mode 7: Core Reactor
+function getCoreFrame(angle) {
+    let pulse = Math.sin(angle * 3) > 0;
+    return "\n" +
+           "   .---.---.---.   \n" +
+           `  |  ${pulse ? "⚛" : " "} CORE ${pulse ? "⚛" : " "}  |  \n` +
+           "   '---'---'---'   \n" +
+           `   OUTPUT: ${pulse ? "100%" : " 50%"}   \n`;
+}
+
+// Mode 8: Quantum Glitch Field
+function getQuantumFrame() {
+    let chars = "░▒▓█<>/\\#$";
+    let lines = [];
+    for (let i = 0; i < 11; i++) {
+        let line = "";
+        for (let j = 0; j < 24; j++) {
+            line += chars[Math.floor(Math.random() * chars.length)];
+        }
+        lines.push(line);
+    }
+    return lines.join("\n");
+}
+
+// MAIN ANIMATION LOOP
 setInterval(() => {
     frameAngle += 0.12;
     const renderer = document.getElementById("ascii-renderer");
 
-    if (currentMode === 0) {
-        renderer.style.color = "#00ffcc";
-        renderer.textContent = getEggFrame(frameAngle);
-    } else if (currentMode === 1) {
-        renderer.style.color = isGlitching ? "#ff0055" : "#ffff00";
-        renderer.textContent = getPyramidFrame(frameAngle);
-    } else if (currentMode === 2) {
-        renderer.style.color = "#00ff66";
-        renderer.textContent = getMatrixFrame();
-    } else if (currentMode === 3) {
-        renderer.style.color = "#ff3333";
-        renderer.textContent = getWarningFrame();
+    switch(currentMode) {
+        case 1:
+            renderer.style.color = "#00ffcc";
+            renderer.textContent = getEggFrame(frameAngle);
+            break;
+        case 2:
+            renderer.style.color = isGlitching ? "#ff0055" : "#ffff00";
+            renderer.textContent = getPyramidFrame(frameAngle);
+            break;
+        case 3:
+            renderer.style.color = "#00ff66";
+            renderer.textContent = getMatrixFrame();
+            break;
+        case 4:
+            renderer.style.color = "#ff3333";
+            renderer.textContent = getWarningFrame();
+            break;
+        case 5:
+            renderer.style.color = "#bd00ff";
+            renderer.textContent = getNebulaFrame(frameAngle);
+            break;
+        case 6:
+            renderer.style.color = "#ff007f";
+            renderer.textContent = getGridFrame(frameAngle);
+            break;
+        case 7:
+            renderer.style.color = "#ff9900";
+            renderer.textContent = getCoreFrame(frameAngle);
+            break;
+        case 8:
+            renderer.style.color = "#00e5ff";
+            renderer.textContent = getQuantumFrame();
+            break;
     }
 }, 100);
 
-// --- ROTARY DIAL INTERACTION LOGIC ---
+// --- ROTARY DIAL LOGIC FOR 8 MODES ---
 const dial = document.getElementById("rotary-dial");
 let isDragging = false;
 let startAngle = 0;
@@ -629,7 +756,7 @@ dial.addEventListener("pointermove", (e) => {
     dial.style.transform = `rotate(${currentRotation}deg)`;
 
     let normalizedDegree = (currentRotation % 360 + 360) % 360;
-    let newMode = Math.floor(normalizedDegree / 90);
+    let newMode = Math.floor(normalizedDegree / (360 / 8)) + 1;
 
     if (newMode !== currentMode) {
         currentMode = newMode;
@@ -644,7 +771,7 @@ dial.addEventListener("pointerup", (e) => {
 
 // --- SCREEN CLICK INTERACTION ---
 function handleScreenClick() {
-    if (currentMode === 1) {
+    if (currentMode === 2) {
         window.location.href = "https://thisisnotawebsitedotcom.com";
     }
 }
