@@ -49,6 +49,38 @@
             to { transform: translateY(-50%); }
         }
 
+        /* --- INFO BOX TOP RIGHT --- */
+        .info-box-top-right {
+            position: absolute;
+            top: max(1vh, 10px);
+            right: max(1vw, 10px);
+            z-index: 100;
+            background: rgba(15, 16, 22, 0.85);
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #00ffcc;
+            font-size: min(1.4vh, 2vw, 11px);
+            line-height: 1.4;
+            max-width: min(80vw, 320px);
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+            text-shadow: 0 0 4px rgba(0, 255, 204, 0.5);
+            pointer-events: auto;
+        }
+        .info-box-top-right strong {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .info-box-top-right a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+        .info-box-top-right a:hover {
+            text-decoration: underline;
+        }
+
         .jsystem-monitor {
             position: relative;
             z-index: 10;
@@ -359,6 +391,14 @@
     <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudioSystem()">🔊 AUDIO SYSTEM: READY (CLICK TO START)</button>
 </div>
 
+<!-- TOP RIGHT INFO BOX -->
+<div class="info-box-top-right">
+    <strong>YOU FOUND THE SECRET WEBSITE BASED ON THE README.md!</strong>
+    <div>PILOT: YB-Jeorgie</div>
+    <div>REPO: <a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank">estregg-ybj</a></div>
+    <div>DATABANK: <a href="https://www.reddit.com/user/Cool-Technician-7609/" target="_blank">u/Cool-Technician-7609</a></div>
+</div>
+
 <div class="jsystem-monitor">
     <div class="brand-header">JSYSTEM.CO</div>
     <div class="bracket tl"></div>
@@ -507,7 +547,7 @@ function toggleAudioSystem() {
         btn.style.color = "#000000";
         syncAudioToMode();
     } else {
-        btn.textContent = "🔈 AUDIO SYSTEM: MUTED";
+        btn.textContent = "FF AUDIO SYSTEM: MUTED";
         btn.style.background = "rgba(255, 0, 85, 0.3)";
         btn.style.color = "#ff0055";
         stopAllAudio();
@@ -856,8 +896,8 @@ function checkCode() {
         case "commands":
             displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity]");
             break;
-        case "Verity":
-            displayMessageOnScreen("Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>');
+        case "verity":
+            displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>');
             break;
         case "clear":
             document.getElementById("screen-output").classList.add("hidden");
