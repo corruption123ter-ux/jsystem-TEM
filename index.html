@@ -525,28 +525,27 @@ setInterval(() => {
 // --- SCREEN FADE DISPLAY LOGIC ---
 let fadeTimeout = null;
 
-function displayMessageOnScreen(messageHTML) {
+function displayMessageOnScreen(messageHTML, holdTime = 10000) {
     const eggElement = document.getElementById("egg-renderer");
     const screenOutput = document.getElementById("screen-output");
 
-    // Clear previous timer if standard commands are entered sequentially
     if (fadeTimeout) clearTimeout(fadeTimeout);
 
     screenOutput.innerHTML = messageHTML;
 
-    // Fade egg out, fade text in
     eggElement.classList.add("hidden");
     eggElement.classList.remove("visible");
     screenOutput.classList.remove("hidden");
     screenOutput.classList.add("visible");
 
-    // Hold message for 10 seconds, then fade back into spinning egg
-    fadeTimeout = setTimeout(() => {
-        screenOutput.classList.add("hidden");
-        screenOutput.classList.remove("visible");
-        eggElement.classList.remove("hidden");
-        eggElement.classList.add("visible");
-    }, 10000);
+    if (holdTime > 0) {
+        fadeTimeout = setTimeout(() => {
+            screenOutput.classList.add("hidden");
+            screenOutput.classList.remove("visible");
+            eggElement.classList.remove("hidden");
+            eggElement.classList.add("visible");
+        }, holdTime);
+    }
 }
 
 // --- SECURE SECURITY LOG MATCH PASSWORD AUTOMATION REGISTRY ---
@@ -574,6 +573,27 @@ function checkCode() {
     }
 
     switch (input) {
+        case "get outta here":
+            // 1. Stop Audio
+            if (isAudioPlaying) {
+                toggleAudio();
+            }
+
+            // 2. Display "Alright good bye" for 5 seconds
+            displayMessageOnScreen("Alright good bye", 5000);
+
+            // 3. After 5 seconds, show Error Message for 10 seconds, then redirect
+            setTimeout(() => {
+                displayMessageOnScreen(
+                    "<span style='color: #ff3333;'>❌ ERROR ❌<br>YB-Jeorgie has something to say:<br>Well if your rude, then get Kicked out</span>", 
+                    10000
+                );
+
+                setTimeout(() => {
+                    window.location.href = "https://www.google.com/search?q=Find+me+a+Therapist+to+Help+me+over+come+cussing";
+                }, 10000);
+            }, 5000);
+            break;
         case "estregg":
             displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
             break;
