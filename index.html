@@ -340,16 +340,8 @@
     <div class="stars"></div>
 </div>
 
-<!-- EMBEDDED AUDIO SOURCES FOR MODE 1 & MODE 2 -->
-<audio id="audio-mode-1" loop preload="auto">
-    <source src="https://media.myinstants.com/media/instants_audio/gravity-falls-theme-song-weirdmageddon-edition-80500.mp3" type="audio/mpeg">
-</audio>
-<audio id="audio-mode-2" loop preload="auto">
-    <source src="https://media.myinstants.com/media/instants_audio/terminal-access-67171.mp3" type="audio/mpeg">
-</audio>
-
 <div class="audio-deck-control">
-    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudioSystem()">🔊 AUDIO SYSTEM: READY</button>
+    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudioSystem()">🔊 AUDIO SYSTEM: READY (CLICK TO START)</button>
 </div>
 
 <div class="jsystem-monitor">
@@ -389,18 +381,44 @@
 </div>
 
 <script>
-// --- EMBEDDED AUDIO SYSTEM CONTROL ---
-let currentMode = 0;
+// --- WEB AUDIO API SYNTHESIZER ---
+let audioCtx = null;
 let isAudioEnabled = false;
+let audioLoopInterval = null;
+let currentMode = 0;
 
-const mode1Audio = document.getElementById("audio-mode-1");
-const mode2Audio = document.getElementById("audio-mode-2");
+function initAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+function playNote(freq, type = 'sawtooth', duration = 0.2, volume = 0.1) {
+    if (!audioCtx || !isAudioEnabled) return;
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {
+        console.log(e);
+    }
+}
 
 function stopAllAudio() {
-    mode1Audio.pause();
-    mode1Audio.currentTime = 0;
-    mode2Audio.pause();
-    mode2Audio.currentTime = 0;
+    if (audioLoopInterval) {
+        clearInterval(audioLoopInterval);
+        audioLoopInterval = null;
+    }
 }
 
 function syncAudioToMode() {
@@ -408,13 +426,30 @@ function syncAudioToMode() {
     if (!isAudioEnabled) return;
 
     if (currentMode === 1) {
-        mode1Audio.play().catch(e => console.log("Playback prevented:", e));
+        // Mode 1: Gravity Falls / Weirdmageddon Theme Synth Loop
+        const gfMelody = [
+            { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
+            { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
+            { f: 349.23, d: 0.18 }, { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 440.00, d: 0.18 },
+            { f: 329.63, d: 0.18 }, { f: 415.30, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 415.30, d: 0.18 }
+        ];
+        let idx = 0;
+        audioLoopInterval = setInterval(() => {
+            let note = gfMelody[idx];
+            playNote(note.f, 'sawtooth', note.d, 0.12);
+            idx = (idx + 1) % gfMelody.length;
+        }, 180);
     } else if (currentMode === 2) {
-        mode2Audio.play().catch(e => console.log("Playback prevented:", e));
+        // Mode 2: Terminal Access Glitch / Data Stream Sound
+        audioLoopInterval = setInterval(() => {
+            let randomFreq = Math.floor(Math.random() * 800) + 200;
+            playNote(randomFreq, 'square', 0.08, 0.05);
+        }, 100);
     }
 }
 
 function toggleAudioSystem() {
+    initAudioContext();
     isAudioEnabled = !isAudioEnabled;
     const btn = document.getElementById("audio-toggle-node");
     
