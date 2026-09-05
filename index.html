@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSYSTEM.CO // TERMINAL INTERCEPT</title>
     <style>
-        /* Premium deep tech architecture base */
         body, html {
             background-color: #030306;
             margin: 0;
@@ -22,7 +21,6 @@
             user-select: none;
         }
 
-        /* HIGH-DEFINITION PARALLAX VECTOR WARP FIELD BACKDROP */
         .space-backdrop {
             position: absolute;
             width: 100%;
@@ -47,7 +45,6 @@
             to { transform: translateY(-50%); }
         }
 
-        /* HIGH-QUALITY PREMIUM INTERFACE CONSOLE CORE (TOP MODULE) */
         .jsystem-monitor {
             position: relative;
             z-index: 10;
@@ -69,7 +66,6 @@
             50% { transform: translateY(-12px) rotate(0.3deg); }
         }
 
-        /* Sleek Industrial Corporate Branding Header Stamp */
         .brand-header {
             position: absolute;
             top: 16px;
@@ -83,7 +79,6 @@
             text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
         }
 
-        /* Premium Tech Corner Brackets */
         .bracket {
             position: absolute;
             width: 10px;
@@ -97,7 +92,6 @@
         .bl { bottom: 14px; left: 14px; border-width: 2px 0 0 2px; transform: rotate(-90deg); }
         .br { bottom: 14px; right: 14px; border-width: 2px 0 0 2px; transform: rotate(180deg); }
 
-        /* Highly-Polished Curved CRT Obsidian Matrix Housing */
         .crt-screen-container {
             background-color: #050608;
             border: 2px solid #1c1e26;
@@ -130,7 +124,6 @@
             opacity: 0.6;
         }
 
-        /* ASCII RENDER WINDOW */
         .ascii-matrix {
             font-size: 11px;
             line-height: 11px;
@@ -144,14 +137,13 @@
             z-index: 2;
         }
 
-        /* SCREEN TEXT OUTPUT CONTAINER */
         .crt-text-output {
             position: absolute;
             width: 85%;
-            font-size: 13px;
+            font-size: 12px;
             color: #33ff77;
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
-            line-height: 1.5;
+            line-height: 1.4;
             text-align: center;
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
@@ -163,7 +155,6 @@
         .hidden { opacity: 0 !important; pointer-events: none !important; }
         .visible { opacity: 1 !important; pointer-events: auto !important; }
 
-        /* INTERCONNECTING CORE CABLE */
         .hardware-wire {
             width: 8px;
             height: 45px;
@@ -180,7 +171,6 @@
             50% { height: 52px; transform: scaleX(0.93); }
         }
 
-        /* CORE DASHBOARD MODULE */
         .inputter-deck {
             position: relative;
             z-index: 10;
@@ -204,7 +194,6 @@
             50% { transform: translateY(-6px) rotate(-0.2deg); }
         }
 
-        /* Left Section: Input Area */
         .status-display-bay {
             width: 260px;
             height: 95px;
@@ -238,7 +227,6 @@
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.3), inset 0 0 5px rgba(0,0,0,0.8);
         }
 
-        /* Middle Section: Interactive Rotary Dial */
         .dial-knob-container {
             display: flex;
             flex-direction: column;
@@ -281,7 +269,6 @@
             pointer-events: none;
         }
 
-        /* Right Section: Launch Button */
         .action-button-bay {
             width: 105px;
             height: 95px;
@@ -320,7 +307,6 @@
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        /* Ambient Audio Controller */
         .audio-deck-control {
             position: absolute;
             bottom: 15px;
@@ -328,22 +314,23 @@
             z-index: 100;
         }
         .mute-toggle-btn {
-            background: rgba(255, 0, 85, 0.8);
-            border: 1px solid #ff0055;
-            color: #ffffff;
+            background: rgba(0, 255, 204, 0.15);
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
             padding: 8px 16px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             font-family: inherit;
             cursor: pointer;
             border-radius: 4px;
             backdrop-filter: blur(5px);
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
             transition: all 0.2s ease;
         }
         .mute-toggle-btn:hover {
-            background: #ff0055;
-            box-shadow: 0 0 20px #ff0055;
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 15px #00ffcc;
         }
     </style>
 </head>
@@ -353,8 +340,16 @@
     <div class="stars"></div>
 </div>
 
+<!-- EMBEDDED AUDIO SOURCES FOR MODE 1 & MODE 2 -->
+<audio id="audio-mode-1" loop preload="auto">
+    <source src="https://media.myinstants.com/media/instants_audio/gravity-falls-theme-song-weirdmageddon-edition-80500.mp3" type="audio/mpeg">
+</audio>
+<audio id="audio-mode-2" loop preload="auto">
+    <source src="https://media.myinstants.com/media/instants_audio/terminal-access-67171.mp3" type="audio/mpeg">
+</audio>
+
 <div class="audio-deck-control">
-    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="startLoudAudio()">🔊 CLICK HERE TO PLAY LOUD MUSIC</button>
+    <button class="mute-toggle-btn" id="audio-toggle-node" onclick="toggleAudioSystem()">🔊 AUDIO SYSTEM: READY</button>
 </div>
 
 <div class="jsystem-monitor">
@@ -394,139 +389,50 @@
 </div>
 
 <script>
-// --- HIGH-DECIBEL WEBAUDIO SYNTHESIZER ENGINE ---
-let audioCtx = null;
-let isAudioPlaying = false;
-let audioTimer = null;
+// --- EMBEDDED AUDIO SYSTEM CONTROL ---
 let currentMode = 0;
-let masterGain = null;
+let isAudioEnabled = false;
 
-function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        masterGain = audioCtx.createGain();
-        
-        // SET HIGH VOLUME LEVEL (0.6 is very loud for Web Audio synthesis)
-        masterGain.gain.setValueAtTime(0.6, audioCtx.currentTime);
-        masterGain.connect(audioCtx.destination);
-    }
+const mode1Audio = document.getElementById("audio-mode-1");
+const mode2Audio = document.getElementById("audio-mode-2");
+
+function stopAllAudio() {
+    mode1Audio.pause();
+    mode1Audio.currentTime = 0;
+    mode2Audio.pause();
+    mode2Audio.currentTime = 0;
 }
 
-// Gravity Falls Melodic Sequence
-const gfMelody = [
-    { freq: 293.66, duration: 0.18 }, { freq: 349.23, duration: 0.18 }, { freq: 440.00, duration: 0.18 }, { freq: 523.25, duration: 0.18 },
-    { freq: 440.00, duration: 0.18 }, { freq: 349.23, duration: 0.18 }, { freq: 293.66, duration: 0.18 }, { freq: 349.23, duration: 0.18 },
-    { freq: 440.00, duration: 0.18 }, { freq: 523.25, duration: 0.18 }, { freq: 587.33, duration: 0.36 }, { freq: 523.25, duration: 0.36 }
-];
+function syncAudioToMode() {
+    stopAllAudio();
+    if (!isAudioEnabled) return;
 
-let noteIdx = 0;
-
-function playLoudMusicSequence() {
-    if (!isAudioPlaying || !audioCtx) return;
-    let time = audioCtx.currentTime;
-
-    if (currentMode === 0) {
-        // Mode 0: Loud Synthwave Synth
-        const notes = [220.00, 261.63, 329.63, 392.00, 440.00];
-        let note = notes[Math.floor(time * 3) % notes.length];
-        
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(note, time);
-        
-        gain.gain.setValueAtTime(0.4, time);
-        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.3);
-        
-        osc.connect(gain);
-        gain.connect(masterGain);
-        osc.start(time);
-        osc.stop(time + 0.35);
-
-    } else if (currentMode === 1) {
-        // Mode 1: Loud Chiptune Gravity Falls Theme
-        let noteData = gfMelody[noteIdx % gfMelody.length];
-        noteIdx++;
-
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(noteData.freq, time);
-
-        gain.gain.setValueAtTime(0.5, time);
-        gain.gain.exponentialRampToValueAtTime(0.01, time + noteData.duration);
-
-        osc.connect(gain);
-        gain.connect(masterGain);
-        osc.start(time);
-        osc.stop(time + noteData.duration);
-
+    if (currentMode === 1) {
+        mode1Audio.play().catch(e => console.log("Playback prevented:", e));
     } else if (currentMode === 2) {
-        // Mode 2: Heavy Cyber Matrix Bassline
-        const synthNotes = [110.00, 130.81, 146.83, 164.81];
-        let note = synthNotes[Math.floor(time * 5) % synthNotes.length];
-
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(note, time);
-
-        gain.gain.setValueAtTime(0.5, time);
-        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.18);
-
-        osc.connect(gain);
-        gain.connect(masterGain);
-        osc.start(time);
-        osc.stop(time + 0.2);
-
-    } else if (currentMode === 3) {
-        // Mode 3: Loud Siren Alarm Pulse
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(440, time);
-        osc.frequency.exponentialRampToValueAtTime(880, time + 0.2);
-
-        gain.gain.setValueAtTime(0.6, time);
-        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.25);
-
-        osc.connect(gain);
-        gain.connect(masterGain);
-        osc.start(time);
-        osc.stop(time + 0.28);
+        mode2Audio.play().catch(e => console.log("Playback prevented:", e));
     }
 }
 
-function startLoudAudio() {
-    initAudio();
+function toggleAudioSystem() {
+    isAudioEnabled = !isAudioEnabled;
     const btn = document.getElementById("audio-toggle-node");
     
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-
-    isAudioPlaying = !isAudioPlaying;
-    
-    if (isAudioPlaying) {
-        btn.textContent = "🔊 AUDIO: PLAYING (LOUD)";
+    if (isAudioEnabled) {
+        btn.textContent = "🔊 AUDIO SYSTEM: ACTIVE";
         btn.style.background = "#00ffcc";
         btn.style.color = "#000000";
-        btn.style.boxShadow = "0 0 20px #00ffcc";
-        playLoudMusicSequence();
-        clearInterval(audioTimer);
-        audioTimer = setInterval(playLoudMusicSequence, 160);
+        syncAudioToMode();
     } else {
-        btn.textContent = "🔊 CLICK HERE TO PLAY LOUD MUSIC";
-        btn.style.background = "rgba(255, 0, 85, 0.8)";
-        btn.style.color = "#ffffff";
-        btn.style.boxShadow = "0 0 15px rgba(255, 0, 85, 0.6)";
-        clearInterval(audioTimer);
+        btn.textContent = "🔈 AUDIO SYSTEM: MUTED";
+        btn.style.background = "rgba(255, 0, 85, 0.3)";
+        btn.style.color = "#ff0055";
+        stopAllAudio();
     }
 }
 
-// Global user click event to ensure sound permissions are granted
 document.body.addEventListener("click", () => {
-    if (!isAudioPlaying) { startLoudAudio(); }
+    if (!isAudioEnabled) { toggleAudioSystem(); }
 }, { once: true });
 
 // --- VISUAL GRAPHICS ENGINE FOR MODES ---
@@ -693,6 +599,7 @@ dial.addEventListener("pointermove", (e) => {
     if (newMode !== currentMode) {
         currentMode = newMode;
         document.getElementById("mode-display-label").textContent = "MODE: " + currentMode;
+        syncAudioToMode();
     }
 });
 
@@ -747,20 +654,25 @@ function checkCode() {
         return;
     }
 
-    switch (input) {
-        case "get outta here":
-            if (isAudioPlaying) { startLoudAudio(); }
-            displayMessageOnScreen("Alright good bye", 5000);
+    // Insults and Swear Word Catching Logic
+    const insultPattern = /(fuck|shit|bitch|asshole|bastard|dick|pussy|cunt|get outta here|shut up)/i;
+    if (insultPattern.test(input)) {
+        stopAllAudio();
+        displayMessageOnScreen("Alright good bye", 5000);
+        setTimeout(() => {
+            displayMessageOnScreen(
+                "<span style='color: #ff3333;'>❌ ERROR ❌<br>YB-Jeorgie has something to say:<br>Well if your rude, then get Kicked out</span>", 
+                10000
+            );
             setTimeout(() => {
-                displayMessageOnScreen(
-                    "<span style='color: #ff3333;'>❌ ERROR ❌<br>YB-Jeorgie has something to say:<br>Well if your rude, then get Kicked out</span>", 
-                    10000
-                );
-                setTimeout(() => {
-                    window.location.href = "https://www.google.com/search?q=Find+me+a+Therapist+to+Help+me+over+come+cussing";
-                }, 10000);
-            }, 5000);
-            break;
+                window.location.href = "https://www.google.com/search?q=Find+me+a+Therapist+to+Help+me+over+come+cussing";
+            }, 10000);
+        }, 5000);
+        inputField.value = "";
+        return;
+    }
+
+    switch (input) {
         case "estregg":
             displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
             break;
@@ -773,8 +685,27 @@ function checkCode() {
         case "cipher":
             displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
             break;
+        case "weirdmageddon":
+            isGlitching = true;
+            displayMessageOnScreen("⚠️ WEIRDMAGEDDON RIFT OPENED. REALITY COLLAPSING ⚠️", 4000);
+            setTimeout(() => { isGlitching = false; }, 4000);
+            break;
+        case "axolotl":
+            displayMessageOnScreen("Sixty degrees that come in threes.<br>Watches from darkness within trees.");
+            break;
+        case "status":
+            displayMessageOnScreen(`SYSTEM OK<br>CURRENT MODE: ${currentMode}<br>AUDIO ENGINES: ${isAudioEnabled ? "ONLINE" : "OFFLINE"}`);
+            break;
+        case "help":
+        case "commands":
+            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear]");
+            break;
+        case "clear":
+            document.getElementById("screen-output").classList.add("hidden");
+            document.getElementById("ascii-renderer").classList.remove("hidden");
+            break;
         default:
-            displayMessageOnScreen("❌ INCORRECT HANDSHAKE CODE ❌");
+            displayMessageOnScreen("S&P Code Invalid");
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
