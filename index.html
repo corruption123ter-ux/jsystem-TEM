@@ -596,17 +596,23 @@ function checkCode() {
             break;
         case "bill":
         case "cipher":
-            displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
+             displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
+            break;
         case "python":
         case "curses":
         case "wine":
             displayMessageOnScreen("OHH you read that on The Repo");
             break;
+        case "Mother Fucker"
+        case "Shit"
+        case "Fuck You Bitch"
+            displayMessageOnScreen("❌S&P Invalid Code!❌<br>Wash your Dirty Mouth Of Yours with Soap");
+            break;
         case "":
             displayMessageOnScreen("TELEMETRY STATUS: ACTIVE. AWAITING DATA TRANSFERS.");
             break;
         default:
-            displayMessageOnScreen("DECRYPTION PATTERN MISMATCH. PIPELINE LOG PURGED.");
+            displayMessageOnScreen("❌INCORRECT HANDSHAKE CODE❌");
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
