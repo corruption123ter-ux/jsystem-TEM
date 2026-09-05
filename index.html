@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSYSTEM.CO // TERMINAL INTERCEPT</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body, html {
             background-color: #030306;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             display: flex;
@@ -48,33 +52,37 @@
         .jsystem-monitor {
             position: relative;
             z-index: 10;
-            width: 450px;
+            width: min(90vw, 420px);
+            height: min(42vh, 320px);
             background: linear-gradient(145deg, #181a24 0%, #0f1016 100%);
             border: 2px solid rgba(0, 191, 255, 0.25);
             border-radius: 16px;
-            padding: 45px 25px 30px 25px;
+            padding: min(5vh, 35px) 20px 20px 20px;
             box-shadow: 
-                0 25px 60px rgba(0,0,0,0.8), 
-                0 0 40px rgba(0, 191, 255, 0.1),
+                0 15px 40px rgba(0,0,0,0.8), 
+                0 0 30px rgba(0, 191, 255, 0.1),
                 inset 0 1px 2px rgba(255,255,255,0.05);
             text-align: center;
             backdrop-filter: blur(10px);
             animation: smoothEngineFloat 8s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         @keyframes smoothEngineFloat {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(0.3deg); }
+            50% { transform: translateY(-1vh) rotate(0.3deg); }
         }
 
         .brand-header {
             position: absolute;
-            top: 16px;
+            top: min(1.5vh, 12px);
             left: 50%;
             transform: translateX(-50%);
             color: #00bfff;
-            font-size: 13px;
+            font-size: min(2.5vh, 12px);
             font-weight: 800;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             font-family: 'Segoe UI', -apple-system, sans-serif;
             text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
         }
@@ -87,31 +95,34 @@
             border-style: solid;
             pointer-events: none;
         }
-        .tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
-        .tr { top: 14px; right: 14px; border-width: 2px 0 0 2px; transform: rotate(90deg); }
-        .bl { bottom: 14px; left: 14px; border-width: 2px 0 0 2px; transform: rotate(-90deg); }
-        .br { bottom: 14px; right: 14px; border-width: 2px 0 0 2px; transform: rotate(180deg); }
+        .tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+        .tr { top: 10px; right: 10px; border-width: 2px 0 0 2px; transform: rotate(90deg); }
+        .bl { bottom: 10px; left: 10px; border-width: 2px 0 0 2px; transform: rotate(-90deg); }
+        .br { bottom: 10px; right: 10px; border-width: 2px 0 0 2px; transform: rotate(180deg); }
 
         .crt-screen-container {
             background-color: #050608;
             border: 2px solid #1c1e26;
             border-radius: 12px;
-            padding: 12px;
-            box-shadow: inset 0 0 40px rgba(0,0,0,1), 0 0 15px rgba(0, 255, 204, 0.05);
+            padding: 8px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,1), 0 0 15px rgba(0, 255, 204, 0.05);
             overflow: hidden;
+            height: 100%;
+            display: flex;
         }
         .crt-screen {
             background: radial-gradient(circle at center, #051412 0%, #010304 100%);
             border-radius: 8px;
-            padding: 10px;
-            height: 210px;
+            padding: 5px;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             cursor: pointer;
-            box-sizing: border-box;
+            overflow: hidden;
         }
         .crt-screen::before {
             content: " ";
@@ -126,8 +137,8 @@
         }
 
         .ascii-matrix {
-            font-size: 10px;
-            line-height: 10px;
+            font-size: min(1.8vh, 2.5vw, 10px);
+            line-height: 1;
             white-space: pre;
             color: #00ffcc;
             font-weight: bold;
@@ -137,15 +148,16 @@
             opacity: 1;
             z-index: 2;
             text-align: center;
+            user-select: none;
         }
 
         .crt-text-output {
             position: absolute;
-            width: 85%;
-            font-size: 12px;
+            width: 90%;
+            font-size: min(1.8vh, 2.8vw, 11px);
             color: #33ff77;
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
-            line-height: 1.4;
+            line-height: 1.3;
             text-align: center;
             transition: opacity 0.3s ease-in-out;
             opacity: 0;
@@ -158,8 +170,8 @@
         .visible { opacity: 1 !important; pointer-events: auto !important; }
 
         .hardware-wire {
-            width: 8px;
-            height: 45px;
+            width: min(1.5vw, 8px);
+            height: min(4vh, 30px);
             background: linear-gradient(90deg, #090a0f 0%, #202430 50%, #090a0f 100%);
             border-left: 1px solid rgba(0, 191, 255, 0.15);
             border-right: 1px solid rgba(0, 191, 255, 0.15);
@@ -169,57 +181,56 @@
             animation: dynamicCableStretch 8s ease-in-out infinite;
         }
         @keyframes dynamicCableStretch {
-            0%, 100% { height: 40px; transform: scaleX(1); }
-            50% { height: 52px; transform: scaleX(0.93); }
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.2); }
         }
 
         .inputter-deck {
             position: relative;
             z-index: 10;
-            width: 510px;
+            width: min(94vw, 460px);
+            height: min(20vh, 120px);
             background: linear-gradient(145deg, #111218 0%, #171922 100%);
             border: 2px solid rgba(0, 255, 204, 0.2);
             border-radius: 14px;
-            padding: 22px;
+            padding: min(2vh, 15px);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
             box-shadow: 
-                0 25px 55px rgba(0,0,0,0.8),
-                0 0 30px rgba(0, 255, 204, 0.05),
+                0 20px 45px rgba(0,0,0,0.8),
+                0 0 25px rgba(0, 255, 204, 0.05),
                 inset 0 1px 2px rgba(255,255,255,0.03);
             animation: smoothConsoleFloat 8s ease-in-out infinite;
             animation-delay: -4s;
         }
         @keyframes smoothConsoleFloat {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(-0.2deg); }
+            50% { transform: translateY(-0.5vh) rotate(-0.2deg); }
         }
 
         .status-display-bay {
-            width: 260px;
-            height: 95px;
+            flex: 1;
+            height: 100%;
             background-color: #030a07;
             border: 1px solid rgba(0, 255, 100, 0.25);
             border-radius: 6px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,1);
-            padding: 10px;
-            box-sizing: border-box;
+            box-shadow: inset 0 0 15px rgba(0,0,0,1);
+            padding: 6px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            position: relative;
         }
         input {
             background-color: #010403;
             color: #00ff66;
             border: 1px solid rgba(0, 255, 100, 0.4);
-            padding: 10px;
-            font-size: 13px;
+            padding: min(1.2vh, 8px);
+            font-size: min(1.8vh, 2.5vw, 12px);
             font-family: inherit;
             outline: none;
             width: 100%;
-            box-sizing: border-box;
             border-radius: 4px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-shadow: 0 0 4px rgba(0, 255, 100, 0.4);
@@ -234,25 +245,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            width: 80px;
-            height: 95px;
+            width: min(20vw, 75px);
+            height: 100%;
         }
         .dial-label {
-            font-size: 9px;
+            font-size: min(1.4vh, 2vw, 9px);
             color: #00ffcc;
             margin-bottom: 4px;
             letter-spacing: 1px;
             font-weight: bold;
+            white-space: nowrap;
         }
         .dial-knob {
-            width: 58px;
-            height: 58px;
+            width: min(10vh, 12vw, 50px);
+            height: min(10vh, 12vw, 50px);
             background: radial-gradient(circle, #3a3e4f 0%, #1c1e26 100%);
             border: 2px solid #00ffcc;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5), 0 0 10px rgba(0,255,204,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5), 0 0 8px rgba(0,255,204,0.2);
             cursor: grab;
             touch-action: none;
         }
@@ -261,19 +272,20 @@
         }
         .dial-pointer-notch {
             position: absolute;
-            width: 4px;
-            height: 14px;
+            width: 3px;
+            height: 25%;
             background-color: #00ffcc;
-            top: 4px;
-            left: 27px;
+            top: 6%;
+            left: 50%;
+            transform: translateX(-50%);
             border-radius: 2px;
             box-shadow: 0 0 6px #00ffcc;
             pointer-events: none;
         }
 
         .action-button-bay {
-            width: 105px;
-            height: 95px;
+            width: min(22vw, 85px);
+            height: 100%;
             background: #0d0e12;
             border: 2px solid #202430;
             border-radius: 8px;
@@ -281,46 +293,47 @@
             align-items: center;
             justify-content: center;
             box-shadow: inset 0 4px 12px rgba(0,0,0,0.9);
+            padding: 4px;
         }
         .red-launch-btn {
-            width: 76px;
-            height: 66px;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(to bottom, #ff3b3b 0%, #aa0000 100%);
             border: 1px solid #550000;
             border-radius: 6px;
             cursor: pointer;
-            box-shadow: 0 5px 0px #400000, 0 6px 12px rgba(0,0,0,0.6);
-            position: relative;
+            box-shadow: 0 4px 0px #400000, 0 5px 10px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .red-launch-btn:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 1px 0px #400000, 0 2px 4px rgba(0,0,0,0.6);
         }
         .red-launch-btn-label {
             color: #ffffff;
-            font-size: 11px;
+            font-size: min(1.6vh, 2.2vw, 10px);
             font-weight: 800;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-align: center;
-            display: block;
-            margin-top: 20px;
             text-shadow: 0 -1px 2px rgba(0,0,0,0.7);
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .audio-deck-control {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
+            top: max(1vh, 10px);
+            left: max(1vw, 10px);
             z-index: 100;
         }
         .mute-toggle-btn {
             background: rgba(0, 255, 204, 0.15);
             border: 1px solid #00ffcc;
             color: #00ffcc;
-            padding: 8px 16px;
-            font-size: 11px;
+            padding: min(1vh, 6px) min(2vw, 12px);
+            font-size: min(1.5vh, 2.2vw, 10px);
             font-weight: bold;
             font-family: inherit;
             cursor: pointer;
@@ -365,7 +378,7 @@
 
 <div class="inputter-deck">
     <div class="status-display-bay">
-        <input type="text" id="code-input" placeholder="Awaiting handshake code..." autocomplete="off">
+        <input type="text" id="code-input" placeholder="Awaiting code..." autocomplete="off">
     </div>
 
     <div class="dial-knob-container">
@@ -428,7 +441,6 @@ function syncAudioToMode() {
     if (!isAudioEnabled) return;
 
     if (currentMode === 1) {
-        // Mode 1: Classic Terminal Vibes (Rhythmic Cyber Beeps)
         const terminalNotes = [440, 880, 554.37, 659.25, 783.99, 1046.50];
         let idx = 0;
         audioLoopInterval = setInterval(() => {
@@ -436,7 +448,6 @@ function syncAudioToMode() {
             idx = (idx + 1) % terminalNotes.length;
         }, 200);
     } else if (currentMode === 2) {
-        // Mode 2: Gravity Falls / Weirdmageddon Theme Loop
         const gfMelody = [
             { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
             { f: 440.00, d: 0.18 }, { f: 523.25, d: 0.18 }, { f: 659.25, d: 0.18 }, { f: 523.25, d: 0.18 },
@@ -450,20 +461,17 @@ function syncAudioToMode() {
             idx = (idx + 1) % gfMelody.length;
         }, 180);
     } else if (currentMode === 3) {
-        // Mode 3: Matrix Cyber Stream
         audioLoopInterval = setInterval(() => {
             let randomFreq = Math.floor(Math.random() * 800) + 200;
             playNote(randomFreq, 'square', 0.08, 0.05);
         }, 100);
     } else if (currentMode === 4) {
-        // Mode 4: Critical Error Siren
         let toggle = false;
         audioLoopInterval = setInterval(() => {
             playNote(toggle ? 880 : 440, 'sawtooth', 0.2, 0.15);
             toggle = !toggle;
         }, 250);
     } else if (currentMode === 5) {
-        // Mode 5: Cosmic Nebula Deep Synth
         const spaceNotes = [110, 164.81, 220, 329.63];
         let idx = 0;
         audioLoopInterval = setInterval(() => {
@@ -471,7 +479,6 @@ function syncAudioToMode() {
             idx = (idx + 1) % spaceNotes.length;
         }, 400);
     } else if (currentMode === 6) {
-        // Mode 6: Retro Synthwave Bass
         const bassLine = [65.41, 65.41, 82.41, 98.00];
         let idx = 0;
         audioLoopInterval = setInterval(() => {
@@ -479,12 +486,10 @@ function syncAudioToMode() {
             idx = (idx + 1) % bassLine.length;
         }, 160);
     } else if (currentMode === 7) {
-        // Mode 7: Nuclear Reactor Core Pulse
         audioLoopInterval = setInterval(() => {
             playNote(60, 'square', 0.3, 0.2);
         }, 500);
     } else if (currentMode === 8) {
-        // Mode 8: Quantum Glitch High-Speed Stutter
         audioLoopInterval = setInterval(() => {
             playNote(1200 + Math.random() * 800, 'sawtooth', 0.04, 0.06);
         }, 60);
@@ -524,15 +529,14 @@ setInterval(() => {
     }
 }, 5000);
 
-// Mode 1: Egg Frame
 function getEggFrame(angle) {
     let frameLines = [];
-    const width = 24, height = 11;
+    const width = 22, height = 9;
     for (let y = 0; y < height; y++) {
         let line = "";
         let normalizedY = (y / (height - 1)) * 2 - 1;
         let eggWidthFactor = Math.sqrt(1 - normalizedY * normalizedY) * (1.1 - 0.25 * normalizedY);
-        let bound = Math.round(8 * eggWidthFactor);
+        let bound = Math.round(7 * eggWidthFactor);
         for (let x = 0; x < width; x++) {
             let distFromCenter = x - Math.round(width / 2);
             if (Math.abs(distFromCenter) <= bound && bound > 0) {
@@ -552,13 +556,12 @@ function getEggFrame(angle) {
     return frameLines.join("\n");
 }
 
-// Mode 2: Bill Cipher Pyramid (Resized to match Egg)
 function getPyramidFrame(angle) {
     if (isGlitching) {
         let glitchChars = "@#$%&*!?:;[]{}<>";
         let glitchStr = "";
-        for (let i = 0; i < 11; i++) {
-            for (let j = 0; j < 24; j++) {
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 22; j++) {
                 glitchStr += glitchChars[Math.floor(Math.random() * glitchChars.length)];
             }
             glitchStr += "\n";
@@ -566,22 +569,22 @@ function getPyramidFrame(angle) {
         return glitchStr;
     }
 
-    let canvas = Array(11).fill("").map(() => Array(24).fill(" "));
-    let cx = 12, cy = 5;
+    let canvas = Array(9).fill("").map(() => Array(22).fill(" "));
+    let cx = 11, cy = 4;
     let cosA = Math.cos(angle), sinA = Math.sin(angle);
 
     let nodes = [
-        [0, -3.5, 0],
-        [-4, 3.5, -3],
-        [4, 3.5, -3],
-        [0, 3.5, 4]
+        [0, -3, 0],
+        [-3.5, 3, -2.5],
+        [3.5, 3, -2.5],
+        [0, 3, 3]
     ];
 
     let projected = nodes.map(node => {
         let x = node[0] * cosA - node[2] * sinA;
         let z = node[0] * sinA + node[2] * cosA;
         let y = node[1];
-        return [Math.round(cx + x * 1.4), Math.round(cy + y)];
+        return [Math.round(cx + x * 1.3), Math.round(cy + y)];
     });
 
     function drawLine(p1, p2, char) {
@@ -589,7 +592,7 @@ function getPyramidFrame(angle) {
         let sx = p1[0] < p2[0] ? 1 : -1, sy = p1[1] < p2[1] ? 1 : -1;
         let err = dx - dy, x = p1[0], y = p1[1];
         while (true) {
-            if (y >= 0 && y < 11 && x >= 0 && x < 24) canvas[y][x] = char;
+            if (y >= 0 && y < 9 && x >= 0 && x < 22) canvas[y][x] = char;
             if (x === p2[0] && y === p2[1]) break;
             let e2 = 2 * err;
             if (e2 > -dy) { err -= dy; x += sx; }
@@ -607,13 +610,12 @@ function getPyramidFrame(angle) {
     return canvas.map(row => row.join("")).join("\n");
 }
 
-// Mode 3: Matrix
 function getMatrixFrame() {
     let chars = "0101XYZ789";
     let lines = [];
-    for (let i = 0; i < 11; i++) {
+    for (let i = 0; i < 9; i++) {
         let line = "";
-        for (let j = 0; j < 24; j++) {
+        for (let j = 0; j < 22; j++) {
             line += Math.random() > 0.6 ? chars[Math.floor(Math.random() * chars.length)] : " ";
         }
         lines.push(line);
@@ -621,23 +623,20 @@ function getMatrixFrame() {
     return lines.join("\n");
 }
 
-// Mode 4: Warning
 function getWarningFrame() {
-    return "\n" +
-           "  ⚠️ OVERDRIVE ⚠️ \n\n" +
-           "  =================\n" +
+    return "  ⚠️ OVERDRIVE ⚠️ \n\n" +
+           "  ===============\n" +
            "  TEMP: EXCEEDED\n" +
            "  STATUS: CRITICAL\n" +
-           "  =================\n";
+           "  ===============\n";
 }
 
-// Mode 5: Cosmic Nebula Portal
 function getNebulaFrame(angle) {
     let lines = [];
-    for (let y = 0; y < 11; y++) {
+    for (let y = 0; y < 9; y++) {
         let line = "";
-        for (let x = 0; x < 24; x++) {
-            let dx = x - 12, dy = y - 5;
+        for (let x = 0; x < 22; x++) {
+            let dx = x - 11, dy = y - 4;
             let dist = Math.sqrt(dx * dx + dy * dy * 2);
             let val = Math.sin(dist - angle * 2);
             if (val > 0.6) line += "★";
@@ -650,14 +649,13 @@ function getNebulaFrame(angle) {
     return lines.join("\n");
 }
 
-// Mode 6: Retro Grid
 function getGridFrame(angle) {
     let lines = [];
-    for (let y = 0; y < 11; y++) {
+    for (let y = 0; y < 9; y++) {
         let line = "";
-        for (let x = 0; x < 24; x++) {
-            if (y === 10 || y === 8 || y === 5) line += "═";
-            else if (x % 4 === 0 && y > 4) line += "║";
+        for (let x = 0; x < 22; x++) {
+            if (y === 8 || y === 6 || y === 4) line += "═";
+            else if (x % 4 === 0 && y > 3) line += "║";
             else line += " ";
         }
         lines.push(line);
@@ -665,23 +663,21 @@ function getGridFrame(angle) {
     return lines.join("\n");
 }
 
-// Mode 7: Core Reactor
 function getCoreFrame(angle) {
     let pulse = Math.sin(angle * 3) > 0;
     return "\n" +
-           "   .---.---.---.   \n" +
-           `  |  ${pulse ? "⚛" : " "} CORE ${pulse ? "⚛" : " "}  |  \n` +
-           "   '---'---'---'   \n" +
-           `   OUTPUT: ${pulse ? "100%" : " 50%"}   \n`;
+           "  .---.---.---.  \n" +
+           ` | ${pulse ? "⚛" : " "} CORE ${pulse ? "⚛" : " "} | \n` +
+           "  '---'---'---'  \n" +
+           `  OUTPUT: ${pulse ? "100%" : "50%"}  \n`;
 }
 
-// Mode 8: Quantum Glitch Field
 function getQuantumFrame() {
     let chars = "░▒▓█<>/\\#$";
     let lines = [];
-    for (let i = 0; i < 11; i++) {
+    for (let i = 0; i < 9; i++) {
         let line = "";
-        for (let j = 0; j < 24; j++) {
+        for (let j = 0; j < 22; j++) {
             line += chars[Math.floor(Math.random() * chars.length)];
         }
         lines.push(line);
@@ -689,7 +685,6 @@ function getQuantumFrame() {
     return lines.join("\n");
 }
 
-// MAIN ANIMATION LOOP
 setInterval(() => {
     frameAngle += 0.12;
     const renderer = document.getElementById("ascii-renderer");
@@ -730,7 +725,7 @@ setInterval(() => {
     }
 }, 100);
 
-// --- ROTARY DIAL LOGIC FOR 8 MODES ---
+// --- ROTARY DIAL LOGIC ---
 const dial = document.getElementById("rotary-dial");
 let isDragging = false;
 let startAngle = 0;
@@ -816,7 +811,6 @@ function checkCode() {
         return;
     }
 
-    // Insults and Swear Word Catching Logic
     const insultPattern = /(fuck|shit|bitch|asshole|bastard|dick|pussy|cunt|get outta here|shut up)/i;
     if (insultPattern.test(input)) {
         stopAllAudio();
