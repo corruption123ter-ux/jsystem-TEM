@@ -176,7 +176,7 @@
             font-weight: bold;
             text-shadow: 0 0 8px rgba(0, 255, 204, 0.8);
             position: absolute;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
             opacity: 1;
             z-index: 2;
             text-align: center;
@@ -191,7 +191,7 @@
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
             line-height: 1.3;
             text-align: center;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
             opacity: 0;
             z-index: 3;
             pointer-events: auto;
@@ -441,8 +441,7 @@ let isAudioEnabled = false;
 let audioLoopInterval = null;
 let currentMode = 1;
 
-// Real Audio Player Element
-const realAudioPlayer = new Audio("Audio.mp3"); // Replace with your real audio URL or relative path
+const realAudioPlayer = new Audio("Audio.mp3");
 
 function initAudioContext() {
     if (!audioCtx) {
@@ -493,18 +492,37 @@ function playMikrophonoAudio() {
         toggleAudioSystem();
     }
 
-    // Fade out background synthesizer music
+    const screenOutput = document.getElementById("screen-output");
+    const asciiElement = document.getElementById("ascii-renderer");
+
+    // Fade background music out
     fadeBackgroundMusicOut(500);
 
-    // Play real audio track
-    realAudioPlayer.currentTime = 0;
-    realAudioPlayer.play().catch(err => console.log("Audio playback error:", err));
+    // Show "Playing Audio:" text on screen
+    displayMessageOnScreen("🎙️ PLAYING AUDIO SOURCE: MIKROPHONO...", 0);
 
-    // When real audio finishes playing, fade background music back in
+    realAudioPlayer.currentTime = 0;
+    realAudioPlayer.play().then(() => {
+        // Audio started successfully
+    }).catch(err => {
+        console.log("Audio file missing or failed to play:", err);
+        displayMessageOnScreen("❌ ERROR: 'mikrophono.mp3' not found!", 4000);
+        fadeBackgroundMusicIn(500);
+    });
+
+    // When the audio ends: Fade text out AND fade background music back in simultaneously
     realAudioPlayer.onended = () => {
+        // Fade out screen text
+        screenOutput.classList.add("hidden");
+        screenOutput.classList.remove("visible");
+
+        // Reveal ASCII egg art smoothly
+        setTimeout(() => {
+            asciiElement.classList.remove("hidden");
+        }, 800);
+
+        // Fade background synth music back in
         fadeBackgroundMusicIn(800);
-        document.getElementById("screen-output").classList.add("hidden");
-        document.getElementById("ascii-renderer").classList.remove("hidden");
     };
 }
 
@@ -866,7 +884,9 @@ function displayMessageOnScreen(messageHTML, holdTime = 0) {
         setTimeout(() => {
             screenOutput.classList.add("hidden");
             screenOutput.classList.remove("visible");
-            asciiElement.classList.remove("hidden");
+            setTimeout(() => {
+                asciiElement.classList.remove("hidden");
+            }, 800);
         }, holdTime);
     }
 }
@@ -936,7 +956,6 @@ function checkCode() {
             displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>', 8000);
             break;
         case "mikrophono":
-            displayMessageOnScreen("Audio Playing:", 0);
             playMikrophonoAudio();
             break;
         case "clear":
