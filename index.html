@@ -499,7 +499,7 @@ function playMikrophonoAudio() {
     fadeBackgroundMusicOut(500);
 
     // Show "Playing Audio:" text on screen
-    displayMessageOnScreen("🎙️ PLAYING AUDIO SOURCE: MIKROPHONO...", 0);
+    displayMessageOnScreen("🎙️ PLAYING AUDIO:.", 0);
 
     realAudioPlayer.currentTime = 0;
     realAudioPlayer.play().then(() => {
