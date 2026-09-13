@@ -467,6 +467,34 @@ function playNote(freq, type = 'sawtooth', duration = 0.2, volume = 0.1) {
     }
 }
 
+function playMikrophonoAudio() {
+    stopAllAudio();
+    initAudioContext();
+
+    // Sequence simulating the Tagalog speech lines
+    const notes = [
+        { f: 523, d: 0.15 }, { f: 587, d: 0.15 }, { f: 659, d: 0.30 }, // 1, 2, 3
+        { f: 440, d: 0.15 }, { f: 493, d: 0.15 }, { f: 523, d: 0.15 }, { f: 587, d: 0.25 }, // isa dalawa tatlo
+        { f: 659, d: 0.18 }, { f: 587, d: 0.18 }, { f: 523, d: 0.18 }, { f: 440, d: 0.35 }, // Ako si George
+        { f: 523, d: 0.15 }, { f: 587, d: 0.15 }, { f: 659, d: 0.15 }, { f: 698, d: 0.20 }, // at ito kung paano
+        { f: 784, d: 0.18 }, { f: 698, d: 0.18 }, { f: 659, d: 0.18 }, { f: 587, d: 0.40 }, // magsubo ng mikrophono
+        { f: 150, d: 0.80 } // Loud inhaled breath effect
+    ];
+
+    let delay = 0;
+    notes.forEach((note, i) => {
+        setTimeout(() => {
+            if (i === notes.length - 1) {
+                // Inhale / Scream sound effect for the final sound
+                playNote(note.f, 'sawtooth', note.d, 0.35);
+            } else {
+                playNote(note.f, 'triangle', note.d, 0.2);
+            }
+        }, delay);
+        delay += note.d * 1000;
+    });
+}
+
 function stopAllAudio() {
     if (audioLoopInterval) {
         clearInterval(audioLoopInterval);
@@ -888,10 +916,14 @@ function checkCode() {
             break;
         case "help":
         case "commands":
-            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity]");
+            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity] [mikrophono]");
             break;
         case "verity":
             displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>');
+            break;
+        case "mikrophono":
+            displayMessageOnScreen("🎙️ AUDIO PLAYING:<br><span style='color:#00ffcc;'>MAGSUBO NG MIKROPHONO</span>", 6000);
+            playMikrophonoAudio();
             break;
         case "clear":
             document.getElementById("screen-output").classList.add("hidden");
