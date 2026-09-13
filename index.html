@@ -436,13 +436,20 @@
 
 <script>
 let audioCtx = null;
+let masterGainNode = null;
 let isAudioEnabled = false;
 let audioLoopInterval = null;
 let currentMode = 1;
 
+// Real Audio Player Element
+const realAudioPlayer = new Audio("Audio.mp3"); // Replace with your real audio URL or relative path
+
 function initAudioContext() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGainNode = audioCtx.createGain();
+        masterGainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+        masterGainNode.connect(audioCtx.destination);
     }
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -459,7 +466,7 @@ function playNote(freq, type = 'sawtooth', duration = 0.2, volume = 0.1) {
         gain.gain.setValueAtTime(volume, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(masterGainNode);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
     } catch(e) {
@@ -467,32 +474,38 @@ function playNote(freq, type = 'sawtooth', duration = 0.2, volume = 0.1) {
     }
 }
 
+function fadeBackgroundMusicOut(durationMs = 500) {
+    if (!audioCtx || !masterGainNode) return;
+    masterGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGainNode.gain.setValueAtTime(masterGainNode.gain.value, audioCtx.currentTime);
+    masterGainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + (durationMs / 1000));
+}
+
+function fadeBackgroundMusicIn(durationMs = 800) {
+    if (!audioCtx || !masterGainNode) return;
+    masterGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + (durationMs / 1000));
+}
+
 function playMikrophonoAudio() {
-    stopAllAudio();
-    initAudioContext();
+    if (!isAudioEnabled) {
+        toggleAudioSystem();
+    }
 
-    // Sequence simulating the Tagalog speech lines
-    const notes = [
-        { f: 523, d: 0.15 }, { f: 587, d: 0.15 }, { f: 659, d: 0.30 }, // 1, 2, 3
-        { f: 440, d: 0.15 }, { f: 493, d: 0.15 }, { f: 523, d: 0.15 }, { f: 587, d: 0.25 }, // isa dalawa tatlo
-        { f: 659, d: 0.18 }, { f: 587, d: 0.18 }, { f: 523, d: 0.18 }, { f: 440, d: 0.35 }, // Ako si George
-        { f: 523, d: 0.15 }, { f: 587, d: 0.15 }, { f: 659, d: 0.15 }, { f: 698, d: 0.20 }, // at ito kung paano
-        { f: 784, d: 0.18 }, { f: 698, d: 0.18 }, { f: 659, d: 0.18 }, { f: 587, d: 0.40 }, // magsubo ng mikrophono
-        { f: 150, d: 0.80 } // Loud inhaled breath effect
-    ];
+    // Fade out background synthesizer music
+    fadeBackgroundMusicOut(500);
 
-    let delay = 0;
-    notes.forEach((note, i) => {
-        setTimeout(() => {
-            if (i === notes.length - 1) {
-                // Inhale / Scream sound effect for the final sound
-                playNote(note.f, 'sawtooth', note.d, 0.35);
-            } else {
-                playNote(note.f, 'triangle', note.d, 0.2);
-            }
-        }, delay);
-        delay += note.d * 1000;
-    });
+    // Play real audio track
+    realAudioPlayer.currentTime = 0;
+    realAudioPlayer.play().catch(err => console.log("Audio playback error:", err));
+
+    // When real audio finishes playing, fade background music back in
+    realAudioPlayer.onended = () => {
+        fadeBackgroundMusicIn(800);
+        document.getElementById("screen-output").classList.add("hidden");
+        document.getElementById("ascii-renderer").classList.remove("hidden");
+    };
 }
 
 function stopAllAudio() {
@@ -577,6 +590,7 @@ function toggleAudioSystem() {
         btn.style.background = "rgba(255, 0, 85, 0.3)";
         btn.style.color = "#ff0055";
         stopAllAudio();
+        realAudioPlayer.pause();
     }
 }
 
@@ -839,7 +853,7 @@ document.getElementById("code-input").addEventListener("keypress", function(even
     if (event.key === "Enter") { checkCode(); }
 });
 
-function displayMessageOnScreen(messageHTML, holdTime = 10000) {
+function displayMessageOnScreen(messageHTML, holdTime = 0) {
     const asciiElement = document.getElementById("ascii-renderer");
     const screenOutput = document.getElementById("screen-output");
 
@@ -863,10 +877,10 @@ function checkCode() {
 
     if (currentState === "awaiting_jeorgie_interest") {
         if (input === "yes" || input === "y") {
-            displayMessageOnScreen("DISPATCHING SECURE GATEWAY ROUTE TO PILOT DATABANK via REDDIT...");
+            displayMessageOnScreen("DISPATCHING SECURE GATEWAY ROUTE TO PILOT DATABANK via REDDIT...", 3000);
             setTimeout(() => { window.location.href = "https://www.reddit.com/user/Cool-Technician-7609/"; }, 1000);
         } else {
-            displayMessageOnScreen("CONVERSATION TREE FLUSHED. MAIN MATRIX REBOOT COMPLETED.");
+            displayMessageOnScreen("CONVERSATION TREE FLUSHED. MAIN MATRIX REBOOT COMPLETED.", 3000);
             currentState = "idle";
         }
         inputField.value = "";
@@ -892,7 +906,7 @@ function checkCode() {
 
     switch (input) {
         case "estregg":
-            displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>');
+            displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>', 8000);
             break;
         case "jeorgie":
         case "yb-jeorgie":
@@ -901,7 +915,7 @@ function checkCode() {
             break;
         case "bill":
         case "cipher":
-            displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️");
+            displayMessageOnScreen("👁️ ACCESS MULTIVERSE INDEX. AXOLOTL SYSTEM CORE CHANNELS CHARGED. 👁️", 5000);
             break;
         case "weirdmageddon":
             isGlitching = true;
@@ -909,20 +923,20 @@ function checkCode() {
             setTimeout(() => { isGlitching = false; }, 4000);
             break;
         case "axolotl":
-            displayMessageOnScreen("Sixty degrees that come in threes.<br>Watches from darkness within trees.");
+            displayMessageOnScreen("Sixty degrees that come in threes.<br>Watches from darkness within trees.", 5000);
             break;
         case "status":
-            displayMessageOnScreen(`SYSTEM OK<br>CURRENT MODE: ${currentMode}<br>AUDIO ENGINES: ${isAudioEnabled ? "ONLINE" : "OFFLINE"}`);
+            displayMessageOnScreen(`SYSTEM OK<br>CURRENT MODE: ${currentMode}<br>AUDIO ENGINES: ${isAudioEnabled ? "ONLINE" : "OFFLINE"}`, 4000);
             break;
         case "help":
         case "commands":
-            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity] [mikrophono]");
+            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity] [mikrophono]", 8000);
             break;
         case "verity":
-            displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>');
+            displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>', 8000);
             break;
         case "mikrophono":
-            displayMessageOnScreen("🎙️ AUDIO PLAYING:<br><span style='color:#00ffcc;'>MAGSUBO NG MIKROPHONO</span>", 6000);
+            displayMessageOnScreen("Audio Playing:", 0);
             playMikrophonoAudio();
             break;
         case "clear":
@@ -930,7 +944,7 @@ function checkCode() {
             document.getElementById("ascii-renderer").classList.remove("hidden");
             break;
         default:
-            displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!");
+            displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!", 4000);
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
