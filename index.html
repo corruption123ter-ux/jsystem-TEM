@@ -186,6 +186,8 @@
         .crt-text-output {
             position: absolute;
             width: 90%;
+            max-height: 85%;
+            overflow-y: auto;
             font-size: min(2.2vh, 3vw, 12px);
             color: #33ff77;
             text-shadow: 0 0 6px rgba(0, 255, 100, 0.6);
@@ -441,7 +443,7 @@ let isAudioEnabled = false;
 let audioLoopInterval = null;
 let currentMode = 1;
 
-const realAudioPlayer = new Audio("Audio.mp3");
+const realAudioPlayer = new Audio();
 
 function initAudioContext() {
     if (!audioCtx) {
@@ -487,41 +489,26 @@ function fadeBackgroundMusicIn(durationMs = 800) {
     masterGainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + (durationMs / 1000));
 }
 
-function playMikrophonoAudio() {
-    if (!isAudioEnabled) {
-        toggleAudioSystem();
-    }
-
+function playMemeAudio(url, name) {
+    if (!isAudioEnabled) { toggleAudioSystem(); }
     const screenOutput = document.getElementById("screen-output");
     const asciiElement = document.getElementById("ascii-renderer");
 
-    // Fade background music out
     fadeBackgroundMusicOut(500);
+    displayMessageOnScreen("🔊 PLAYING MEME AUDIO: " + name, 0);
 
-    // Show "Playing Audio:" text on screen
-    displayMessageOnScreen("🎙️ PLAYING AUDIO:.", 0);
-
+    realAudioPlayer.src = url;
     realAudioPlayer.currentTime = 0;
-    realAudioPlayer.play().then(() => {
-        // Audio started successfully
-    }).catch(err => {
-        console.log("Audio file missing or failed to play:", err);
-        displayMessageOnScreen("❌ ERROR: 'mikrophono.mp3' not found!", 4000);
+    realAudioPlayer.play().catch(err => {
+        console.log("Audio play error:", err);
+        displayMessageOnScreen("❌ AUDIO ERROR: Failed to stream sound.", 3000);
         fadeBackgroundMusicIn(500);
     });
 
-    // When the audio ends: Fade text out AND fade background music back in simultaneously
     realAudioPlayer.onended = () => {
-        // Fade out screen text
         screenOutput.classList.add("hidden");
         screenOutput.classList.remove("visible");
-
-        // Reveal ASCII egg art smoothly
-        setTimeout(() => {
-            asciiElement.classList.remove("hidden");
-        }, 800);
-
-        // Fade background synth music back in
+        setTimeout(() => { asciiElement.classList.remove("hidden"); }, 800);
         fadeBackgroundMusicIn(800);
     };
 }
@@ -891,6 +878,242 @@ function displayMessageOnScreen(messageHTML, holdTime = 0) {
     }
 }
 
+// -------------------------------------------------------------
+// DATA BANK: 100 MYINSTANTS MEME SOUNDS
+// -------------------------------------------------------------
+const audioMemes = {
+    "bruh": "https://www.myinstants.com/media/sounds/movie_1.mp3",
+    "vine-boom": "https://www.myinstants.com/media/sounds/vine-boom.mp3",
+    "fart": "https://www.myinstants.com/media/sounds/perfect-fart.mp3",
+    "emotional-damage": "https://www.myinstants.com/media/sounds/emotional-damage.mp3",
+    "discord-notification": "https://www.myinstants.com/media/sounds/discord-notification.mp3",
+    "airhorn": "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3",
+    "sad-violin": "https://www.myinstants.com/media/sounds/sad-violin.mp3",
+    "roblox-oof": "https://www.myinstants.com/media/sounds/roblox-death-sound_1.mp3",
+    "taco-bell": "https://www.myinstants.com/media/sounds/taco-bell-bong-sound-effect.mp3",
+    "windows-error": "https://www.myinstants.com/media/sounds/windows-xp-error-sound.mp3",
+    "directed-by": "https://www.myinstants.com/media/sounds/directed-by-robert-b_gE8be2R.mp3",
+    "to-be-continued": "https://www.myinstants.com/media/sounds/untitled_1071.mp3",
+    "subway-surfers": "https://www.myinstants.com/media/sounds/subway-surfers.mp3",
+    "among-us-kill": "https://www.myinstants.com/media/sounds/among-us-kill.mp3",
+    "among-us-role": "https://www.myinstants.com/media/sounds/among-us-role-sound.mp3",
+    "spongebob-fail": "https://www.myinstants.com/media/sounds/spongebob-fail-sound-effect.mp3",
+    "bonk": "https://www.myinstants.com/media/sounds/bonk-sound-effect.mp3",
+    "noice": "https://www.myinstants.com/media/sounds/noice.mp3",
+    "metal-pipe": "https://www.myinstants.com/media/sounds/metal-pipe-falling-sound-effect.mp3",
+    "sheesh": "https://www.myinstants.com/media/sounds/sheesh.mp3",
+    "gta-waste": "https://www.myinstants.com/media/sounds/gta-v-wasted.mp3",
+    "lego-yoda": "https://www.myinstants.com/media/sounds/lego-yoda-death-sound-effect.mp3",
+    "saness": "https://www.myinstants.com/media/sounds/saness-mogalovanid.mp3",
+    "megalovania": "https://www.myinstants.com/media/sounds/sans-undertale.mp3",
+    "fbi-open-up": "https://www.myinstants.com/media/sounds/fbi-open-up.mp3",
+    "knock": "https://www.myinstants.com/media/sounds/door-knocking.mp3",
+    "illuminati": "https://www.myinstants.com/media/sounds/x-files.mp3",
+    "john-cena": "https://www.myinstants.com/media/sounds/and-his-name-is-john-cena-1.mp3",
+    "deez-nuts": "https://www.myinstants.com/media/sounds/deez-nuts.mp3",
+    "giga-chad": "https://www.myinstants.com/media/sounds/can-you-feel-my-heart.mp3",
+    "ping": "https://www.myinstants.com/media/sounds/discord-ping.mp3",
+    "pop": "https://www.myinstants.com/media/sounds/pop-cat-sound.mp3",
+    "run": "https://www.myinstants.com/media/sounds/run-sound-effect.mp3",
+    "scream": "https://www.myinstants.com/media/sounds/wilhelm-scream.mp3",
+    "quack": "https://www.myinstants.com/media/sounds/quack.mp3",
+    "duck-toy": "https://www.myinstants.com/media/sounds/duck.mp3",
+    "cricket": "https://www.myinstants.com/media/sounds/cricket-chirping.mp3",
+    "cough": "https://www.myinstants.com/media/sounds/cough-meme.mp3",
+    "huh": "https://www.myinstants.com/media/sounds/huh-sound-effect.mp3",
+    "what-the-hell": "https://www.myinstants.com/media/sounds/what-the-hell-oh-my-god-no-way.mp3",
+    "stop-it": "https://www.myinstants.com/media/sounds/stop-it-get-some-help.mp3",
+    "why-are-you-running": "https://www.myinstants.com/media/sounds/why-are-you-running.mp3",
+    "hello-there": "https://www.myinstants.com/media/sounds/hello-there.mp3",
+    "fortnite-knock": "https://www.myinstants.com/media/sounds/fortnite-knocked.mp3",
+    "fortnite-death": "https://www.myinstants.com/media/sounds/fortnite-death.mp3",
+    "mario-jump": "https://www.myinstants.com/media/sounds/mario-jump.mp3",
+    "mario-coin": "https://www.myinstants.com/media/sounds/super-mario-coin.mp3",
+    "mario-death": "https://www.myinstants.com/media/sounds/super-mario-bros-die-sound-effect.mp3",
+    "pacman-death": "https://www.myinstants.com/media/sounds/pacman-death.mp3",
+    "sonic-ring": "https://www.myinstants.com/media/sounds/sonic-ring.mp3",
+    "minecraft-oof": "https://www.myinstants.com/media/sounds/classic_hurt.mp3",
+    "minecraft-villager": "https://www.myinstants.com/media/sounds/villager-sound.mp3",
+    "minecraft-chest": "https://www.myinstants.com/media/sounds/minecraft-chest.mp3",
+    "csgo-bomb": "https://www.myinstants.com/media/sounds/the-bomb-has-been-planted.mp3",
+    "headshot": "https://www.myinstants.com/media/sounds/headshot.mp3",
+    "tactical-nuke": "https://www.myinstants.com/media/sounds/tactical-nuke.mp3",
+    "hitmarker": "https://www.myinstants.com/media/sounds/mlg-hitmarker.mp3",
+    "snoop-dogg": "https://www.myinstants.com/media/sounds/smoke-weed-everyday.mp3",
+    "coffin-dance": "https://www.myinstants.com/media/sounds/coffin-dance.mp3",
+    "nyan-cat": "https://www.myinstants.com/media/sounds/nyan-cat.mp3",
+    "keyboard-cat": "https://www.myinstants.com/media/sounds/keyboard-cat.mp3",
+    "rickroll": "https://www.myinstants.com/media/sounds/never-gonna-give-you-up.mp3",
+    "crab-rave": "https://www.myinstants.com/media/sounds/crab-rave.mp3",
+    "windows-shutdown": "https://www.myinstants.com/media/sounds/windows-xp-shutdown.mp3",
+    "windows-startup": "https://www.myinstants.com/media/sounds/windows-xp-startup.mp3",
+    "gamecube": "https://www.myinstants.com/media/sounds/gamecube-intro.mp3",
+    "ps2": "https://www.myinstants.com/media/sounds/ps2-startup.mp3",
+    "xbox": "https://www.myinstants.com/media/sounds/xbox-360-achievement.mp3",
+    "steam": "https://www.myinstants.com/media/sounds/steam-message.mp3",
+    "skype": "https://www.myinstants.com/media/sounds/skype-call.mp3",
+    "iphone-radar": "https://www.myinstants.com/media/sounds/iphone-alarm.mp3",
+    "samsung-whistle": "https://www.myinstants.com/media/sounds/samsung-whistle.mp3",
+    "bad-to-the-bone": "https://www.myinstants.com/media/sounds/bad-to-the-bone.mp3",
+    "gawd-damn": "https://www.myinstants.com/media/sounds/god-damn.mp3",
+    "oh-no": "https://www.myinstants.com/media/sounds/oh-no-no-no-tik-tok-sound.mp3",
+    "yoda-screaming": "https://www.myinstants.com/media/sounds/yoda-death.mp3",
+    "error-bass": "https://www.myinstants.com/media/sounds/bass-boosted-error.mp3",
+    "wah-wah": "https://www.myinstants.com/media/sounds/sad-trombon.mp3",
+    "ta-da": "https://www.myinstants.com/media/sounds/tada.mp3",
+    "snare-roll": "https://www.myinstants.com/media/sounds/drum-roll.mp3",
+    "rimshot": "https://www.myinstants.com/media/sounds/ba-dum-tss.mp3",
+    "applause": "https://www.myinstants.com/media/sounds/applause.mp3",
+    "cheering": "https://www.myinstants.com/media/sounds/children-cheering.mp3",
+    "boo": "https://www.myinstants.com/media/sounds/booo.mp3",
+    "gasp": "https://www.myinstants.com/media/sounds/gasp.mp3",
+    "yawn": "https://www.myinstants.com/media/sounds/yawn.mp3",
+    "sneeze": "https://www.myinstants.com/media/sounds/sneeze.mp3",
+    "slap": "https://www.myinstants.com/media/sounds/slap.mp3",
+    "punch": "https://www.myinstants.com/media/sounds/punch.mp3",
+    "explosion": "https://www.myinstants.com/media/sounds/explosion.mp3",
+    "laser": "https://www.myinstants.com/media/sounds/laser.mp3",
+    "shotgun": "https://www.myinstants.com/media/sounds/shotgun-reload.mp3",
+    "sniper": "https://www.myinstants.com/media/sounds/awp-shot.mp3",
+    "glass-break": "https://www.myinstants.com/media/sounds/glass-breaking.mp3",
+    "bell": "https://www.myinstants.com/media/sounds/boxing-bell.mp3",
+    "whistle": "https://www.myinstants.com/media/sounds/referee-whistle.mp3",
+    "siren": "https://www.myinstants.com/media/sounds/police-siren.mp3",
+    "honk": "https://www.myinstants.com/media/sounds/clown-horn.mp3",
+    "boing": "https://www.myinstants.com/media/sounds/boing.mp3",
+    "whip": "https://www.myinstants.com/media/sounds/whip-crack.mp3"
+};
+
+// -------------------------------------------------------------
+// DATA BANK: 100 JOKES
+// -------------------------------------------------------------
+const jokeBank = {
+    "joke1": "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "joke2": "There are 10 types of people in the world: Those who understand binary, and those who don't.",
+    "joke3": "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'",
+    "joke4": "Why did the developer quit his job? Because he didn't get arrays!",
+    "joke5": "How many programmers does it take to change a lightbulb? None, that's a hardware problem.",
+    "joke6": "Real programmers count from 0.",
+    "joke7": "Why was the JavaScript developer sad? Because he didn't Null how to Express himself.",
+    "joke8": "What is a programmer's favorite hangout spot? Foo Bar.",
+    "joke9": "0 is false, 1 is true, and everything else is undefined.",
+    "joke10": "Why do Java developers wear glasses? Because they don't C#!",
+    "joke11": "An optimist says the glass is half full. A pessimist says it's half empty. A programmer says it's twice as large as necessary.",
+    "joke12": "Why did the HTML break up with CSS? Because CSS had no class.",
+    "joke13": "Where do cyber security experts go on vacation? Phishing spots.",
+    "joke14": "Why did the computer go to the doctor? It had a virus!",
+    "joke15": "What do you call a computer floating in the ocean? A Dell Rolling in the Deep.",
+    "joke16": "Why was the computer cold? It left its Windows open!",
+    "joke17": "What's a robot's favorite snack? Computer chips!",
+    "joke18": "Why did the smartphone get glasses? It lost its contacts!",
+    "joke19": "What did one internet router say to another? 'Is it just me, or is there a lot of traffic today?'",
+    "joke20": "Why was the cell phone wearing glasses? Because it lost its contacts.",
+    "joke21": "What is an astronaut’s favorite key on the keyboard? The Space bar.",
+    "joke22": "Why did the function cross the road? To return a value on the other side.",
+    "joke23": "What’s the best way to catch a wild computer? With an Ethernet net.",
+    "joke24": "Why did the database administrator get kicked out of the party? They kept dropping tables.",
+    "joke25": "What did the C++ code say to the C code? 'You have no class.'",
+    "joke26": "Why do Python programmers hate snakes? Because they prefer lists!",
+    "joke27": "What's a pirate's favorite programming language? R!",
+    "joke28": "Why did the hard drive fail? It lost its spin.",
+    "joke29": "What's a ghost's favorite data type? Boooo-lean!",
+    "joke30": "Why was the algorithm late? It took a complex loop.",
+    "joke31": "What do you call 8 hobbits? A hobbyte.",
+    "joke32": "Why did the bug go to school? To get smarter!",
+    "joke33": "How do you comfort a JavaScript bug? You console.log it.",
+    "joke34": "Why couldn't the user log in? Because they lost their keys.",
+    "joke35": "What is a network technician's favorite tea? IP tea.",
+    "joke36": "Why did the server go down? It wanted to take a rest.",
+    "joke37": "What's a terminal's favorite movie? Matrix.",
+    "joke38": "Why did the web browser go to therapy? Too many cookies.",
+    "joke39": "What do you call a site with no styling? Raw HTML.",
+    "joke40": "Why do computers never get tired? They take micro-naps in sleep mode.",
+    "joke41": "Why was the compiler angry? Syntax errors everywhere!",
+    "joke42": "What did the RAM say to the CPU? 'Remember me!'",
+    "joke43": "Why did the GPU overheat? Too much rendering!",
+    "joke44": "What's a hacker's favorite game? Hide and Seek.",
+    "joke45": "Why did the Wi-Fi router blush? It saw the modem's IP.",
+    "joke46": "What do you call a fake coding degree? A pseudo-certificate.",
+    "joke47": "Why was the keyboard tired? Because it had two Shifts!",
+    "joke48": "What's a developer's favorite drink? Java.",
+    "joke49": "Why did the byte get arrested? It stole a bit.",
+    "joke50": "What is a cipher's favorite food? Encrypted code.",
+    "joke51": "Why did the terminal close? It ran out of memory.",
+    "joke52": "What do you call a coding error in space? An astro-bug.",
+    "joke53": "Why did the CSS grid break? Margin overflow.",
+    "joke54": "What is a loop's favorite dance? The Infinite Spin.",
+    "joke55": "Why did the website crash? Too many requests!",
+    "joke56": "What's a hacker's favorite song? 'Hack to the Future'.",
+    "joke57": "Why did the developer go broke? He lost his cache.",
+    "joke58": "What do you call a secure password? Hard to remember.",
+    "joke59": "Why did the main thread pause? Waiting for async.",
+    "joke60": "What is a git commit's favorite word? Push!",
+    "joke61": "Why did the repository freeze? Merge conflict.",
+    "joke62": "What do you call a bad line of code? A mis-statement.",
+    "joke63": "Why was the boolean lonely? It only had two options.",
+    "joke64": "What's a terminal prompt's favorite pet? A Shellie dog.",
+    "joke65": "Why did the user clear cache? Fresh start!",
+    "joke66": "What do you call a developer who doesn't comment? A secret keeper.",
+    "joke67": "Why did the microchip fail? Bad connections.",
+    "joke68": "What is a system admin's favorite song? 'Stayin' Alive'.",
+    "joke69": "Why did the script stop running? Segmentation fault.",
+    "joke70": "What do you call a fast algorithm? Quick-sort.",
+    "joke71": "Why did the user press F5? Refreshing experience.",
+    "joke72": "What is a file's worst nightmare? Shift + Delete.",
+    "joke73": "Why did the cloud database expand? High bandwidth.",
+    "joke74": "What do you call a smart terminal? AI Console.",
+    "joke75": "Why did the developer like Git? Version control magic.",
+    "joke76": "What is a proxy's job? Standing in between.",
+    "joke77": "Why did the code go to jail? Uncaught exception.",
+    "joke78": "What do you call a group of bytes? A kilobyte squad.",
+    "joke79": "Why did the computer crash? Blue Screen of Death.",
+    "joke80": "What's a programmer's dream? Bug-free release.",
+    "joke81": "Why was the shell script fast? Lightweight logic.",
+    "joke82": "What do you call a secure terminal? Encrypted shell.",
+    "joke83": "Why did the webpage load slowly? Heavy assets.",
+    "joke84": "What is a DOM tree's favorite season? Spring.",
+    "joke85": "Why did the API respond 200? Everything was OK!",
+    "joke86": "What is a 404 error's favorite hobby? Getting lost.",
+    "joke87": "Why did the server return 500? Internal crisis.",
+    "joke88": "What's a developer's favorite animal? A Debugging Duck.",
+    "joke89": "Why was the function recursive? It couldn't stop calling itself.",
+    "joke90": "What do you call an empty array? Nothing inside.",
+    "joke91": "Why did the code fail test cases? Edge cases missed.",
+    "joke92": "What is a syntax error? A typo with consequences.",
+    "joke93": "Why did the terminal beep? Invalid operation.",
+    "joke94": "What do you call a fast server? Blazing fast.",
+    "joke95": "Why was the database indexed? Fast queries!",
+    "joke96": "What's a coder's favorite food? Byte-sized snacks.",
+    "joke97": "Why did the script run endlessly? Missing break statement.",
+    "joke98": "What do you call a broken link? Dead end.",
+    "joke99": "Why did the terminal output green? Cyber aesthetic.",
+    "joke100": "What is the ultimate command? sudo !!"
+};
+
+// -------------------------------------------------------------
+// DATA BANK: 300 TEXTS (ESTREGG-YBJ LORE, EASTER EGGS, SYSTEM)
+// -------------------------------------------------------------
+const textBank = {};
+for (let i = 1; i <= 300; i++) {
+    const key = "text" + i;
+    if (i <= 50) {
+        textBank[key] = `[ESTREGG-YBJ REPO LOG #${i}]: Terminal core module verified under YB-Jeorgie sub-protocol. System operating nominal.`;
+    } else if (i <= 100) {
+        textBank[key] = `[GRAVITY FALLS MATRIX #${i}]: Axolotl channel frequency wavelength locked at ${i * 12} Hertz. Bill Cipher eyes monitoring channel.`;
+    } else if (i <= 150) {
+        textBank[key] = `[REDDIT DATABANK LINK #${i}]: u/Cool-Technician-7609 signal pulse stable. Data packets encrypted with JSYSTEM key.`;
+    } else if (i <= 200) {
+        textBank[key] = `[EASTER EGG CORE #${i}]: Secret vector variable #${i} initialized in JSYSTEM.CO console workspace.`;
+    } else if (i <= 250) {
+        textBank[key] = `[SYSTEM DIAGNOSTIC #${i}]: CRT Matrix raster line scan pass #${i} rendered successfully. Rotational engine at steady state.`;
+    } else {
+        textBank[key] = `[TERMINAL DATA BUFFER #${i}]: Quantum bit registers aligned. YB-Jeorgie command intercept buffer #${i} active.`;
+    }
+}
+
+// -------------------------------------------------------------
+// CODE EXECUTOR WITH 500+ COMMAND SUPPORT
+// -------------------------------------------------------------
 function checkCode() {
     const inputField = document.getElementById("code-input");
     const input = inputField.value.toLowerCase().trim();
@@ -924,6 +1147,28 @@ function checkCode() {
         return;
     }
 
+    // 1. CHECK AUDIO MEMES (100 Commands)
+    if (audioMemes[input]) {
+        playMemeAudio(audioMemes[input], input.toUpperCase());
+        inputField.value = "";
+        return;
+    }
+
+    // 2. CHECK JOKES (100 Commands)
+    if (jokeBank[input]) {
+        displayMessageOnScreen("🤡 JOKE COMMAND [" + input + "]:<br><br>" + jokeBank[input], 8000);
+        inputField.value = "";
+        return;
+    }
+
+    // 3. CHECK TEXT/LORE/ESTREGG (300 Commands)
+    if (textBank[input]) {
+        displayMessageOnScreen("📜 LORE NODE [" + input + "]:<br><br>" + textBank[input], 8000);
+        inputField.value = "";
+        return;
+    }
+
+    // STANDARD SYSTEM COMMANDS
     switch (input) {
         case "estregg":
             displayMessageOnScreen('HANDSHAKE VERIFIED:<br><a href="https://github.com/corruption123ter-ux/estregg-ybj" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>', 8000);
@@ -946,17 +1191,17 @@ function checkCode() {
             displayMessageOnScreen("Sixty degrees that come in threes.<br>Watches from darkness within trees.", 5000);
             break;
         case "status":
-            displayMessageOnScreen(`SYSTEM OK<br>CURRENT MODE: ${currentMode}<br>AUDIO ENGINES: ${isAudioEnabled ? "ONLINE" : "OFFLINE"}`, 4000);
+            displayMessageOnScreen(`SYSTEM OK<br>CURRENT MODE: ${currentMode}<br>AUDIO ENGINES: ${isAudioEnabled ? "ONLINE" : "OFFLINE"}<br>TOTAL COMMANDS LOADED: 508`, 5000);
             break;
         case "help":
         case "commands":
-            displayMessageOnScreen("AVAILABLE COMMANDS:<br>[estregg] [jeorgie] [bill] [cipher] [axolotl] [weirdmageddon] [status] [clear] [Verity] [mikrophono]", 8000);
+            displayMessageOnScreen("COMMAND INDEX (500+ TOTAL):<br>• Core: [estregg] [jeorgie] [bill] [status] [verity] [mikrophono]<br>• Sound Memes (100): [bruh] [vine-boom] [emotional-damage] [bonk] [metal-pipe] ...<br>• Jokes (100): [joke1] to [joke100]<br>• Lore/Texts (300): [text1] to [text300]", 10000);
             break;
         case "verity":
             displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>', 8000);
             break;
         case "mikrophono":
-            playMikrophonoAudio();
+            playMemeAudio("Audio.mp3", "MIKROPHONO");
             break;
         case "clear":
             document.getElementById("screen-output").classList.add("hidden");
