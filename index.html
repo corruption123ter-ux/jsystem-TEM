@@ -1130,7 +1130,7 @@ function checkCode() {
         return;
     }
 
-    const insultPattern = /(fuck|shit|bitch|asshole|bastard|dick|pussy|cunt|get outta here|shut up)/i;
+    const insultPattern = /(fuck|shit|bitch|asshole|bastard|dick|pussy|cunt|get outta here|shut up|nigger)/i;
     if (insultPattern.test(input)) {
         stopAllAudio();
         displayMessageOnScreen("Alright good bye", 5000);
@@ -1210,10 +1210,10 @@ function checkCode() {
         default:
             displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!", 4000);
             break;
-        case "LOS.txt":
-            displayMessageOnScreen(`LOS.txt has been "VERIFIED":<br><a href="https://github.com/corruption123ter-ux/jsystem-TEM/blob/main/List-Of-Commands.txt" target="_blank" style="color:#00ffcc;">Go To Command Help list</a>`, 8000);
+        case "TOS.txt":
+        case "tos.txt":
+            displayMessageOnScreen('TOS VERIFIED:<br><a href="https://github.com/corruption123ter-ux/jsystem-TEM" target="_blank" style="color:#00ffcc;">LAUNCH REPOSITORY ACCESS CONTAINER</a>', 8000);
             break;
-
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
 }
