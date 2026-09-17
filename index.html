@@ -1210,9 +1210,10 @@ function checkCode() {
         default:
             displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!", 4000);
             break;
-       case "LOS.txt":
-            displayMessageOnScreen("LOS.txt has been \"VERIFIED\":<br><a href='https://github.com/corruption123ter-ux/jsystem-TEM/blob/main/List-Of-Commands.txt' target='_blank' style='color:#00ffcc;'>Go To Command Help list</a>", 8000);
+        case "LOS.txt":
+            displayMessageOnScreen(`LOS.txt has been "VERIFIED":<br><a href="https://github.com/corruption123ter-ux/jsystem-TEM/blob/main/List-Of-Commands.txt" target="_blank" style="color:#00ffcc;">Go To Command Help list</a>`, 8000);
             break;
+
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
 }
