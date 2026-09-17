@@ -1195,7 +1195,7 @@ function checkCode() {
             break;
         case "help":
         case "commands":
-            displayMessageOnScreen("COMMAND INDEX (500+ TOTAL):<br>• Core: [estregg] [jeorgie] [bill] [status] [verity] [mikrophono] [clear] [weirdmageddon] [axolotl]<br>• Sound Memes (100): [bruh] [vine-boom] [emotional-damage] [bonk] [metal-pipe] ...<br>• Jokes (100): [joke1] to [joke100]<br>• Lore/Texts (300): [text1] to [text300]<br>To see more check the TXT file on repo: Jsystem-TEM", 10000);
+            displayMessageOnScreen("COMMAND INDEX (500+ TOTAL):<br>• Core: [estregg] [jeorgie] [bill] [status] [verity] [mikrophono] [clear] [weirdmageddon] [axolotl]<br>• Sound Memes (100): [bruh] [vine-boom] [emotional-damage] [bonk] [metal-pipe] ...<br>• Jokes (100): [joke1] to [joke100]<br>• Lore/Texts (300): [text1] to [text300]<br>To see more, Type: LOS.txt", 10000);
             break;
         case "verity":
             displayMessageOnScreen('Verity Movie Initiated<br><a href="https://www.youtube.com/watch?v=f6f3PhauXyg" target="_blank" style="color:#00ffcc;">LAUNCH Verity Movie</a>', 8000);
@@ -1209,6 +1209,9 @@ function checkCode() {
             break;
         default:
             displayMessageOnScreen("Handshake Code Invalid!<br>Type 'help' to find commands that are valid!", 4000);
+            break;
+        case "LOS.txt":
+            displayMessageOnScreen('LOS.txt has been "VERIFIED":<br><a href="https://github.com/corruption123ter-ux/jsystem-TEM/blob/main/List%20Of%20Commands.txt" target="_blank" style="color:#00ffcc;">Go To Command Help list</a>', 8000);
             break;
     }
     if (currentState !== "awaiting_jeorgie_interest") { inputField.value = ""; }
